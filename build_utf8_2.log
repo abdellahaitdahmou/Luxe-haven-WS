@@ -1,0 +1,96 @@
+﻿
+> luxe-haven@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.1.6 (Turbopack)
+
+node.exe : ÔÜá The 
+"middleware" file 
+convention is 
+deprecated. Please 
+use "proxy" instead. 
+Learn more: https://n
+extjs.org/docs/messag
+es/middleware-to-prox
+y
+Au caractère Ligne:1 
+: 1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ÔÜá The   
+  "middle...lewar    
+e-to-proxy:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 5.1s
+  Running TypeScript ...
+Failed to compile.
+
+./components/Property
+Calendar.tsx:69:21
+Type error: Object 
+literal may only 
+specify known 
+properties, and 
+'IconLeft' does not 
+exist in type 'Partia
+l<CustomComponents>'.
+
+[0m [90m 67 |[39m 
+                disab
+led[33m=[39m{blocke
+dDates}
+ [90m 68 |[39m     
+            component
+s[33m=[39m{{
+[31m[1m>[22m[39m
+[90m 69 |[39m       
+              [33mIc
+onLeft[39m[33m:[39
+m ({ 
+[33m...[39mprops 
+}) [33m=>[39m [33m
+<[39m[33mChevronLef
+t[39m className[33m
+=[39m[32m"h-4 
+w-4"[39m [33m/[39m
+[33m>[39m[33m,[39
+m
+ [90m    |[39m     
+                
+[31m[1m^[22m[39m
+ [90m 70 |[39m     
+                [33m
+IconRight[39m[33m:
+[39m ({ 
+[33m...[39mprops 
+}) [33m=>[39m [33m
+<[39m[33mChevronRig
+ht[39m className[33
+m=[39m[32m"h-4 
+w-4"[39m [33m/[39m
+[33m>[39m[33m,[39
+m
+ [90m 71 |[39m     
+            }}
+ [90m 72 |[39m     
+            modifiers
+ClassNames[33m=[39m
+{{[0m
+Next.js build worker 
+exited with code: 1 
+and signal: null

@@ -1,0 +1,4 @@
+﻿utils/stripe/server.ts(4,5): error TS2322: Type '"2023-10-16"' is not assignable to type '"2026-01-28.clover"'.
+utils/supabase/middleware.ts(21,45): error TS2345: Argument of type '[string, string, Partial<SerializeOptions>]' is not assignable to parameter of type '[key: string, value: string] | [options: RequestCookie]'.
+  Type '[string, string, Partial<SerializeOptions>]' is not assignable to type '[key: string, value: string]'.
+    Source has 3 element(s) but target allows only 2.

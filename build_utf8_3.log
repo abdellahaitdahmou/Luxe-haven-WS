@@ -1,0 +1,81 @@
+﻿
+> luxe-haven@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.1.6 (Turbopack)
+
+node.exe : ÔÜá The 
+"middleware" file 
+convention is 
+deprecated. Please 
+use "proxy" instead. 
+Learn more: https://n
+extjs.org/docs/messag
+es/middleware-to-prox
+y
+Au caractère Ligne:1 
+: 1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ÔÜá The   
+  "middle...lewar    
+e-to-proxy:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 4.9s
+  Running TypeScript ...
+Failed to compile.
+
+./utils/stripe/server
+.ts:4:5
+Type error: Type 
+'"2023-10-16"' is 
+not assignable to 
+type '"2026-01-28.clo
+ver"'.
+
+[0m [90m 2 |[39m
+ [90m 3 |[39m 
+[36mexport[39m 
+[36mconst[39m 
+stripe [33m=[39m 
+[36mnew[39m [33mSt
+ripe[39m(process[33
+m.[39menv[33m.[39m
+[33mSTRIPE_SECRET_KE
+Y[39m[33m![39m[33
+m,[39m {
+[31m[1m>[22m[39m
+[90m 4 |[39m     api
+Version[33m:[39m [
+32m'2023-10-16'[39m
+[33m,[39m [90m// 
+Use latest stable 
+version or match 
+your account[39m
+ [90m   |[39m     
+[31m[1m^[22m[39m
+ [90m 5 |[39m     t
+ypescript[33m:[39m 
+[36mtrue[39m[33m,
+[39m
+ [90m 6 |[39m 
+})[33m;[39m
+ [90m 7 |[39m[0m
+Next.js build worker 
+exited with code: 1 
+and signal: null

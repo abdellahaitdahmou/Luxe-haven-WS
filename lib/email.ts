@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// No top-level instantiation to avoid build-time errors
 
 export async function sendNewMessageEmail({
   to,
@@ -18,6 +18,7 @@ export async function sendNewMessageEmail({
   chatLink: string;
 }) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: 'Luxe Haven <notifications@luxehaven.com>',
       to: [to],

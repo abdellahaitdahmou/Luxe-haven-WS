@@ -556,7 +556,7 @@ export default function EditPropertyPage() {
                                 <div className="flex flex-col items-center justify-center p-8 text-gray-500">
                                     <ImageIcon className="w-8 h-8 mb-2" />
                                     <p>No images yet.</p>
-                                    <p className="text-sm">Click "Add Images" to upload.</p>
+                                    <p className="text-sm">Click &quot;Add Images&quot; to upload.</p>
                                 </div>
                             ) : (
                                 <div className="flex flex-wrap gap-4">

@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(request: Request) {
     try {
-        const supabase = createClient();
+        const supabase = await createClient();
 
         // 1. Authenticate Admin
         const { data: { user } } = await supabase.auth.getUser();

@@ -5,12 +5,12 @@ import { createClient } from '@/utils/supabase/server';
 // Initialize Stripe with a placeholder key if env var is missing during build
 const stripeKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
 const stripe = new Stripe(stripeKey, {
-    apiVersion: '2025-01-27.acacia', // Use latest API version available or match package
-});
+    apiVersion: '2023-10-16',
+} as any);
 
 export async function POST(request: Request) {
     try {
-        const supabase = createClient();
+        const supabase = await createClient();
 
         // 1. Authenticate User
         const { data: { user } } = await supabase.auth.getUser();

@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { User } from '@supabase/supabase-js'
 
 type UserRole = 'admin' | 'owner' | 'guest' | null
 
 export function useUserRole() {
+    const supabase = useMemo(() => createClient(), [])
     const [user, setUser] = useState<User | null>(null)
     const [role, setRole] = useState<UserRole>(null)
     const [loading, setLoading] = useState(true)
-    useEffect(() => {
-        const supabase = createClient()
 
+    useEffect(() => {
         async function fetchUserAndRole() {
             const { data: { user } } = await supabase.auth.getUser()
 
@@ -31,7 +31,7 @@ export function useUserRole() {
         }
 
         fetchUserAndRole()
-    }, [])
+    }, [supabase])
 
     return { user, role, loading }
 }

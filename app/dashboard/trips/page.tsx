@@ -15,11 +15,7 @@ export default function TripsPage() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'upcoming' | 'past' | 'cancelled'>('upcoming');
 
-    useEffect(() => {
-        fetchTrips();
-    }, []);
-
-    const fetchTrips = async () => {
+    async function fetchTrips() {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
@@ -32,7 +28,11 @@ export default function TripsPage() {
 
         if (data) setBookings(data);
         setLoading(false);
-    };
+    }
+
+    useEffect(() => {
+        fetchTrips();
+    }, []);
 
     const filteredBookings = bookings.filter(b => {
         const isCancelled = b.status === 'cancelled';

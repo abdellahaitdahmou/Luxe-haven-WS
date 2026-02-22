@@ -27,7 +27,7 @@ export default function AboutPage() {
                         <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
                             <h3 className="text-2xl font-bold text-gold-500 mb-4">Global Presence</h3>
                             <p className="text-gray-400 leading-relaxed">
-                                From the sun-drenched cliffs of the Amalfi Coast to the vibrant heart of Marrakech, Luxe Haven provides access to ultra-exclusive estates, penthouses, and private islands in over 80 of the world's most desired destinations.
+                                From the sun-drenched cliffs of the Amalfi Coast to the vibrant heart of Marrakech, Luxe Haven provides access to ultra-exclusive estates, penthouses, and private islands in over 80 of the world&apos;s most desired destinations.
                             </p>
                         </div>
                     </section>

@@ -61,7 +61,7 @@ export default function WishlistPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold text-white mb-2">Your Wishlist</h1>
-                    <p className="text-gray-400">Places you've saved for later.</p>
+                    <p className="text-gray-400">Places you&apos;ve saved for later.</p>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@ export default function WishlistPage() {
                     </div>
                     <h2 className="text-xl font-bold text-white mb-2">No saved properties yet</h2>
                     <p className="text-gray-400 max-w-md mx-auto mb-8">
-                        Seems like you haven't found your dream stay yet. Browse our exclusive collection and save your favorites.
+                        Seems like you haven&apos;t found your dream stay yet. Browse our exclusive collection and save your favorites.
                     </p>
                     <Link href="/properties">
                         <Button className="bg-gold-500 text-black hover:bg-gold-400 font-bold px-8">

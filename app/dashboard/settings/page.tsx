@@ -8,7 +8,8 @@ import { IdVerificationSection } from "@/components/settings/IdVerificationSecti
 import { PaymentMethodsSection } from "@/components/settings/PaymentMethodsSection";
 import { SecuritySection } from "@/components/settings/SecuritySection";
 
-export default async function SettingsPage({ searchParams }: { searchParams: { tab?: string } }) {
+export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
+    const { tab } = await searchParams;
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -22,7 +23,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: { t
         .eq("id", user.id)
         .single();
 
-    const currentTab = searchParams.tab || "verification";
+    const currentTab = tab || "verification";
 
     return (
         <div className="max-w-6xl mx-auto space-y-8 p-6">

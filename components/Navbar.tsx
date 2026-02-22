@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { useUserRole } from "@/hooks/useUserRole"
-import { Menu, Search, User as UserIcon, LayoutDashboard, Settings, LogOut, ChevronDown } from "lucide-react"
+import { Menu, Search, LayoutDashboard, Settings, LogOut, ChevronDown, User as UserIcon } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 import { NotificationBell } from "./notifications/NotificationBell"
 

@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { sendNewMessageEmail } from "@/lib/email";
 
 export async function getConversations() {
@@ -20,8 +19,8 @@ export async function getConversations() {
     }
 
     // Batch-fetch all unique profile IDs and property IDs
-    const profileIds = [...new Set(rows.flatMap((c: any) => [c.guest_id, c.owner_id]).filter(Boolean))];
-    const propertyIds = [...new Set(rows.map((c: any) => c.property_id).filter(Boolean))];
+    const profileIds = [...new Set(rows.flatMap((c: { guest_id: string; owner_id: string }) => [c.guest_id, c.owner_id]).filter(Boolean))];
+    const propertyIds = [...new Set(rows.map((c: { property_id: string }) => c.property_id).filter(Boolean))];
     const conversationIds = rows.map((c: any) => c.id);
 
     const [profilesRes, propertiesRes, unreadRes] = await Promise.all([
@@ -34,10 +33,10 @@ export async function getConversations() {
             .neq('sender_id', user.id),
     ]);
 
-    const profileMap: Record<string, any> = {};
+    const profileMap: Record<string, { id: string, full_name: string | null, avatar_url: string | null }> = {};
     (profilesRes.data || []).forEach(p => { profileMap[p.id] = p; });
 
-    const propertyMap: Record<string, any> = {};
+    const propertyMap: Record<string, { id: string, title: string }> = {};
     (propertiesRes.data || []).forEach(p => { propertyMap[p.id] = p; });
 
     const unreadCounts: Record<string, number> = {};
@@ -76,7 +75,15 @@ export async function getMessages(conversationId: string) {
     }
 
     // Map msg_ prefixed columns back to original names for the UI
-    return (rows || []).map((m: any) => ({
+    return (rows || []).map((m: {
+        msg_id: string;
+        msg_conversation_id: string;
+        msg_sender_id: string;
+        msg_content: string;
+        msg_is_read: boolean;
+        msg_type: string;
+        msg_created_at: string;
+    }) => ({
         id: m.msg_id,
         conversation_id: m.msg_conversation_id,
         sender_id: m.msg_sender_id,

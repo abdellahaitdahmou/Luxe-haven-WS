@@ -19,7 +19,7 @@ export function Footer() {
                             />
                         </Link>
                         <p className="text-gray-600 text-sm max-w-md leading-relaxed mb-6 font-medium">
-                            Experience the pinnacle of luxury hosting and travel. Discover the world's most exclusive stays, curated for the discerning traveler. Welcome to your Dream Home.
+                            Experience the pinnacle of luxury hosting and travel. Discover the world&apos;s most exclusive stays, curated for the discerning traveler. Welcome to your Dream Home.
                         </p>
                         <div className="flex items-center gap-2 text-gold-600 text-sm font-bold bg-gold-500/10 px-4 py-2 rounded-full border border-gold-500/20">
                             <ShieldCheck className="w-4 h-4" /> Secure & Verified Stays

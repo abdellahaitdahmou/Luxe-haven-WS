@@ -9,7 +9,9 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const CURRENT_YEAR = new Date().getFullYear();
 
-export default function AdminDashboardPage() {
+import { Suspense } from "react";
+
+function AdminDashboardContent() {
     const [stats, setStats] = useState({
         totalUsers: 0,
         totalProperties: 0,
@@ -19,11 +21,7 @@ export default function AdminDashboardPage() {
     const [chartData, setChartData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchStats();
-    }, []);
-
-    const fetchStats = async () => {
+    async function fetchStats() {
         const supabase = createClient();
 
         // Parallel fetching for speed
@@ -41,7 +39,7 @@ export default function AdminDashboardPage() {
             supabase.from('bookings').select('total_price, created_at').gte('created_at', `${CURRENT_YEAR}-01-01`)
         ]);
 
-        const totalRevenue = revenueData?.reduce((acc, curr) => acc + (curr.platform_fee || 0), 0) || 0;
+        const totalRevenue = revenueData?.reduce((acc: any, curr: any) => acc + (curr.platform_fee || 0), 0) || 0;
 
         setStats({
             totalUsers: usersCount || 0,
@@ -52,12 +50,12 @@ export default function AdminDashboardPage() {
 
         // Process Chart Data
         const monthlyData = MONTHS.map((month, idx) => {
-            const monthBookings = allBookings?.filter(b => {
+            const monthBookings = allBookings?.filter((b: any) => {
                 const d = new Date(b.created_at);
                 return d.getMonth() === idx;
             }) || [];
 
-            const revenue = monthBookings.reduce((acc, b) => acc + (b.total_price || 0), 0);
+            const revenue = monthBookings.reduce((acc: any, b: any) => acc + (b.total_price || 0), 0);
 
             return {
                 name: month,
@@ -68,7 +66,11 @@ export default function AdminDashboardPage() {
 
         setChartData(monthlyData);
         setLoading(false);
-    };
+    }
+
+    useEffect(() => {
+        fetchStats();
+    }, []);
 
     if (loading) return <div className="flex h-64 items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-gold-500" /></div>;
 
@@ -181,5 +183,13 @@ export default function AdminDashboardPage() {
                 </CardContent>
             </Card>
         </div>
+    );
+}
+
+export default function AdminDashboardPage() {
+    return (
+        <Suspense fallback={<div className="flex h-64 items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-gold-500" /></div>}>
+            <AdminDashboardContent />
+        </Suspense>
     );
 }

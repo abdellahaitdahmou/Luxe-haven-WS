@@ -226,7 +226,7 @@ export default function AdminPropertiesPage() {
                             {properties.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-8 py-12 text-center text-gray-400">
-                                        No properties found. Click "Add Property" to create one.
+                                        No properties found. Click &quot;Add Property&quot; to create one.
                                     </td>
                                 </tr>
                             ) : (

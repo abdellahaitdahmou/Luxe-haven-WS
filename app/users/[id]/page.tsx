@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import { Navbar } from "@/components/Navbar";
 import { PropertyCard } from "@/components/PropertyCard";
 
+export const dynamic = 'force-dynamic';
+
 export default async function PublicProfilePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const supabase = await createClient();

@@ -52,9 +52,7 @@ export default function OwnerCalendarPage() {
         return eachDayOfInterval({ start: startOfMonth(currentDate), end: endOfMonth(currentDate) });
     }, [currentDate]);
 
-    useEffect(() => { fetchData(); }, [currentDate]);
-
-    const fetchData = async () => {
+    async function fetchData() {
         setLoading(true);
         const supabase = createClient();
 
@@ -109,7 +107,9 @@ export default function OwnerCalendarPage() {
 
         setStats({ totalRevenue, totalBookings: (allBookings || []).length, occupiedNights });
         setLoading(false);
-    };
+    }
+
+    useEffect(() => { fetchData(); }, [currentDate]);
 
     const getBookingForDate = (propertyId: string, date: Date) => {
         return bookings.find(b =>

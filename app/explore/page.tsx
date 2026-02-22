@@ -1,8 +1,9 @@
 import { createClient } from "@/utils/supabase/server"
+export const dynamic = 'force-dynamic';
 import { Suspense } from "react"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
-import { Search, SlidersHorizontal, Calendar, Users } from "lucide-react"
+import { Search, SlidersHorizontal, Calendar, Users, Star, MapPin, Bed, Bath } from "lucide-react"
 import Link from "next/link"
 import { ExplorePropertyCard } from "@/components/ExplorePropertyCard"
 

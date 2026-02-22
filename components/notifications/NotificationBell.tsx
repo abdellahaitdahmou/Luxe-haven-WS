@@ -14,6 +14,27 @@ export function NotificationBell() {
     const [isOpen, setIsOpen] = useState(false)
     const supabase = createClient()
 
+    async function fetchNotifications() {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+
+        const { data, error } = await supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(10)
+
+        if (error) {
+            console.error("Error fetching notifications:", JSON.stringify(error))
+        }
+
+        if (data) {
+            setNotifications(data)
+            setUnreadCount(data.filter(n => !n.is_read).length)
+        }
+    }
+
     useEffect(() => {
         let channel: any;
 
@@ -79,27 +100,6 @@ export function NotificationBell() {
             }
         }
     }, [])
-
-    const fetchNotifications = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
-
-        const { data, error } = await supabase
-            .from('notifications')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false })
-            .limit(10)
-
-        if (error) {
-            console.error("Error fetching notifications:", JSON.stringify(error))
-        }
-
-        if (data) {
-            setNotifications(data)
-            setUnreadCount(data.filter(n => !n.is_read).length)
-        }
-    }
 
     const markAsRead = async (id: string) => {
         await supabase

@@ -32,11 +32,7 @@ function HostDashboard({ user }: { user: any }) {
     const [selectedProperty, setSelectedProperty] = useState("all");
     const [selectedBedrooms, setSelectedBedrooms] = useState("all");
 
-    useEffect(() => {
-        fetchDashboardData();
-    }, []);
-
-    const fetchDashboardData = async () => {
+    async function fetchDashboardData() {
         const supabase = createClient();
 
         // Fetch Properties
@@ -73,7 +69,11 @@ function HostDashboard({ user }: { user: any }) {
 
         setStats({ earnings, totalBookings: bookingsData.length, averageRating, activeListings });
         setLoading(false);
-    };
+    }
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
 
     // Filtered Bookings
     const filteredBookings = useMemo(() => {
@@ -286,7 +286,7 @@ function TravelerDashboard({ user }: { user: any }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
+        async function fetchData() {
             const supabase = createClient();
 
             // 1. Fetch Upcoming Trip
@@ -297,7 +297,7 @@ function TravelerDashboard({ user }: { user: any }) {
                 .gte('check_in_date', new Date().toISOString())
                 .order('check_in_date', { ascending: true })
                 .limit(1)
-                .single();
+                .maybeSingle(); // Fix .single() error if no trip exists
             setUpcomingTrip(trip);
 
             // 2. Fetch All Properties (Active)
@@ -309,7 +309,7 @@ function TravelerDashboard({ user }: { user: any }) {
             setProperties(props || []);
 
             setLoading(false);
-        };
+        }
         fetchData();
     }, [user.id]);
 
@@ -436,7 +436,7 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const checkUser = async () => {
+        async function checkUser() {
             const supabase = createClient();
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
@@ -445,7 +445,7 @@ export default function DashboardPage() {
                 setRole(profile?.role || 'guest');
             }
             setLoading(false);
-        };
+        }
         checkUser();
     }, []);
 

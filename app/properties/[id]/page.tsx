@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server"
 import { notFound } from "next/navigation"
+export const dynamic = 'force-dynamic';
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { BookingWidget } from "@/components/BookingWidget"

@@ -143,7 +143,7 @@ export default async function Home() {
             </div>
             <h3 className="text-2xl font-bold mb-3">Properties Coming Soon</h3>
             <p className="text-gray-400 mb-8 max-w-md mx-auto">
-              We're preparing our exclusive portfolio. Sign up to be notified when our first properties go live.
+              We&apos;re preparing our exclusive portfolio. Sign up to be notified when our first properties go live.
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link href="/signup" className="bg-gold-500 hover:bg-gold-400 text-black font-semibold px-8 py-3 rounded-full transition">

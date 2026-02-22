@@ -8,30 +8,19 @@ import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCurrency } from "@/context/CurrencyContext";
 
-export default function CheckoutPage() {
+import { Suspense } from "react";
+
+function CheckoutContent() {
     const searchParams = useSearchParams();
-    const router = useSearchParams();
     const bookingId = searchParams.get("booking_id");
     const { format } = useCurrency();
-
-    // In a real app, successful booking creation redirects here with IDs
-    // For testing/mocking, we can pass params or fetch pending booking
-
-    // We need these details to create payment intent
-    // Ideally, we fetch the pending booking from DB using bookingId
 
     const [booking, setBooking] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (bookingId) {
-            fetchBooking();
-        }
-    }, [bookingId]);
-
     async function fetchBooking() {
         const supabase = createClient();
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from("bookings")
             .select(`
                 *,
@@ -46,6 +35,12 @@ export default function CheckoutPage() {
         setLoading(false);
     }
 
+    useEffect(() => {
+        if (bookingId) {
+            fetchBooking();
+        }
+    }, [bookingId]);
+
     if (!bookingId) {
         return <div className="p-10 text-white">Invalid Checkout Session. No Booking ID found.</div>;
     }
@@ -57,9 +52,6 @@ export default function CheckoutPage() {
     if (!booking) {
         return <div className="p-10 text-white">Booking not found.</div>;
     }
-
-    // Calculate dates for PaymentWrapper
-    // PaymentWrapper expects: { bookingId, propertyId, checkIn, checkOut, guests }
 
     return (
         <div className="min-h-screen bg-black text-white p-8">
@@ -102,5 +94,13 @@ export default function CheckoutPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CheckoutPage() {
+    return (
+        <Suspense fallback={<div className="flex justify-center p-20"><Loader2 className="w-10 h-10 animate-spin text-gold-500" /></div>}>
+            <CheckoutContent />
+        </Suspense>
     );
 }

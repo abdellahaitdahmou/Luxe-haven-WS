@@ -20,11 +20,19 @@ export async function createCheckoutSession(bookingId: string) {
         throw new Error('Booking not found')
     }
 
-    const property = booking.properties
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const owner = (property as any).profiles
+    interface PropertyWithOwner extends Record<string, any> {
+        title: string;
+        image_urls?: string[];
+        profiles: {
+            stripe_account_id: string;
+            host_fee_percent?: number;
+        };
+    }
 
-    if (!owner.stripe_account_id) {
+    const property = booking.properties as unknown as PropertyWithOwner
+    const owner = property.profiles
+
+    if (!owner?.stripe_account_id) {
         throw new Error('Owner has not connected Stripe')
     }
 

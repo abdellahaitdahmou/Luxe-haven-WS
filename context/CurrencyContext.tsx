@@ -33,11 +33,11 @@ const CurrencyContext = createContext<CurrencyContextValue>({
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
     const [currency, setCurrencyState] = useState<CurrencyInfo>(defaultCurrency);
-    const supabase = createClient();
 
     // Load saved currency from admin_settings on mount
     useEffect(() => {
         const load = async () => {
+            const supabase = createClient();
             try {
                 const { data } = await supabase
                     .from("admin_settings")

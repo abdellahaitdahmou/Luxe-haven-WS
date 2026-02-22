@@ -12,9 +12,9 @@ export function NotificationBell() {
     const [notifications, setNotifications] = useState<any[]>([])
     const [unreadCount, setUnreadCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
-    const supabase = createClient()
 
     async function fetchNotifications() {
+        const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return
 
@@ -39,6 +39,7 @@ export function NotificationBell() {
         let channel: any;
 
         const setupRealtime = async () => {
+            const supabase = createClient()
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) {
                 console.log("[NotificationBell] No user found, skipping subscription")
@@ -96,12 +97,14 @@ export function NotificationBell() {
         return () => {
             if (channel) {
                 console.log("[NotificationBell] Cleaning up channel")
+                const supabase = createClient()
                 supabase.removeChannel(channel)
             }
         }
     }, [])
 
     const markAsRead = async (id: string) => {
+        const supabase = createClient()
         await supabase
             .from('notifications')
             .update({ is_read: true })
@@ -143,6 +146,7 @@ export function NotificationBell() {
                                 {unreadCount > 0 && (
                                     <button
                                         onClick={async () => {
+                                            const supabase = createClient()
                                             const { data: { user } } = await supabase.auth.getUser()
                                             if (!user) return
                                             await supabase.from('notifications').update({ is_read: true }).eq('user_id', user.id)

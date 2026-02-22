@@ -26,6 +26,7 @@ export function DashboardHeader({ userProfile }: { userProfile: any }) {
     const supabase = createClient();
 
     const handleSignOut = async () => {
+        const supabase = createClient();
         await supabase.auth.signOut();
         router.push("/login");
         router.refresh();

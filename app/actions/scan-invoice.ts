@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY?.trim() || "");
 export async function processInvoiceAction(base64Image: string) {
     try {
         console.log("Processing invoice with Gemini 1.5 Flash...");
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         const prompt = `
             Analyze this invoice image and extract the following information in JSON format:

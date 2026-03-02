@@ -3,10 +3,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY?.trim() || "");
 
 export async function processInvoiceAction(base64Image: string) {
     try {
+        console.log("Processing invoice with Gemini 1.5 Flash...");
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `

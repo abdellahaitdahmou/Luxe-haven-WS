@@ -14,7 +14,7 @@ import {
     Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Loader2, Plus, Receipt, TrendingDown, Calendar as CalendarIcon, Wallet, CreditCard, Landmark, Building2, FileUp, AlertTriangle, Trash2, Edit2, Check, X, Save, Search, SlidersHorizontal, FilterX } from "lucide-react";
+import { Loader2, Plus, Receipt, TrendingDown, Calendar as CalendarIcon, Wallet, CreditCard, Landmark, Building2, FileUp, AlertTriangle, Trash2, Edit2, Check, X, Save, Search, SlidersHorizontal, FilterX, Scan } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import Papa from "papaparse";

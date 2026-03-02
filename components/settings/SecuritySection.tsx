@@ -43,23 +43,23 @@ export function SecuritySection() {
     };
 
     return (
-        <div className="bg-surface-50 border border-white/10 rounded-xl p-8 max-w-2xl">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+        <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-8 max-w-2xl">
+            <h3 className="text-xl font-bold text-[var(--page-text)] mb-4 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-gold-500" />
                 Privacy & Security
             </h3>
 
             <div className="space-y-6">
-                <div className="pb-6 border-b border-white/10">
+                <div className="pb-6 border-b border-[var(--card-border)]">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <p className="text-white font-medium">Change Password</p>
-                            <p className="text-sm text-gray-400">Update your password to keep your account secure.</p>
+                            <p className="text-[var(--page-text)] font-medium">Change Password</p>
+                            <p className="text-sm text-[var(--muted-text)]">Update your password to keep your account secure.</p>
                         </div>
                         {!isChangingPassword && (
                             <button
                                 onClick={() => setIsChangingPassword(true)}
-                                className="px-4 py-2 bg-surface-100 hover:bg-surface-200 text-white rounded-lg transition-colors border border-white/10"
+                                className="px-4 py-2 bg-[var(--surface-100)] hover:bg-[var(--surface-200)] text-[var(--page-text)] rounded-lg transition-colors border border-[var(--card-border)]"
                             >
                                 Update
                             </button>
@@ -67,24 +67,24 @@ export function SecuritySection() {
                     </div>
 
                     {isChangingPassword && (
-                        <form onSubmit={handleUpdatePassword} className="bg-surface-100 p-6 rounded-lg border border-white/10 space-y-4">
+                        <form onSubmit={handleUpdatePassword} className="bg-[var(--surface-100)] p-6 rounded-lg border border-[var(--card-border)] space-y-4">
                             <div className="space-y-2">
-                                <label className="text-sm text-gray-400">New Password</label>
+                                <label className="text-sm text-[var(--muted-text)]">New Password</label>
                                 <input
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-surface-50 border border-white/10 rounded-lg p-3 text-white focus:border-gold-500 outline-none"
+                                    className="w-full bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-3 text-[var(--page-text)] focus:border-gold-500 outline-none"
                                     required
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm text-gray-400">Confirm New Password</label>
+                                <label className="text-sm text-[var(--muted-text)]">Confirm New Password</label>
                                 <input
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full bg-surface-50 border border-white/10 rounded-lg p-3 text-white focus:border-gold-500 outline-none"
+                                    className="w-full bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-3 text-[var(--page-text)] focus:border-gold-500 outline-none"
                                     required
                                 />
                             </div>
@@ -92,7 +92,7 @@ export function SecuritySection() {
                                 <button
                                     type="button"
                                     onClick={() => setIsChangingPassword(false)}
-                                    className="px-4 py-2 text-gray-400 hover:text-white"
+                                    className="px-4 py-2 text-[var(--muted-text)] hover:text-[var(--page-text)]"
                                 >
                                     Cancel
                                 </button>
@@ -111,10 +111,10 @@ export function SecuritySection() {
 
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="text-white font-medium">Two-Factor Authentication</p>
-                        <p className="text-sm text-gray-400">Add an extra layer of security to your account.</p>
+                        <p className="text-[var(--page-text)] font-medium">Two-Factor Authentication</p>
+                        <p className="text-sm text-[var(--muted-text)]">Add an extra layer of security to your account.</p>
                     </div>
-                    <button className="px-4 py-2 bg-surface-100 hover:bg-surface-200 text-white rounded-lg transition-colors border border-white/10 opacity-50 cursor-not-allowed">
+                    <button className="px-4 py-2 bg-[var(--surface-100)] hover:bg-[var(--surface-200)] text-[var(--muted-text)] rounded-lg transition-colors border border-[var(--card-border)] opacity-50 cursor-not-allowed">
                         Coming Soon
                     </button>
                 </div>

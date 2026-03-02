@@ -70,10 +70,10 @@ export function BulkUpdateDialog({ open, onOpenChange, properties, onUpdate }: B
                     <div className="space-y-2">
                         <Label>Property</Label>
                         <Select value={selectedPropertyId} onValueChange={setSelectedPropertyId}>
-                            <SelectTrigger className="bg-surface-50 border-white/10 text-white">
+                            <SelectTrigger className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                                 <SelectValue placeholder="Select property" />
                             </SelectTrigger>
-                            <SelectContent className="bg-surface-100 border-white/10 text-white">
+                            <SelectContent className="bg-surface-100 border-white/10 text-[var(--page-text)]">
                                 {properties.map((p) => (
                                     <SelectItem key={p.id} value={p.id}>
                                         {p.title}
@@ -89,7 +89,7 @@ export function BulkUpdateDialog({ open, onOpenChange, properties, onUpdate }: B
                                 type="date"
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
-                                className="bg-surface-50 border-white/10 text-white"
+                                className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                             />
                         </div>
                         <div className="space-y-2">
@@ -98,19 +98,19 @@ export function BulkUpdateDialog({ open, onOpenChange, properties, onUpdate }: B
                                 type="date"
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
-                                className="bg-surface-50 border-white/10 text-white"
+                                className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                             />
                         </div>
                     </div>
                     <div className="space-y-2">
                         <Label>Price per Night</Label>
                         <div className="relative">
-                            <span className="absolute left-3 top-2.5 text-gray-400">$</span>
+                            <span className="absolute left-3 top-2.5 text-[var(--muted-text)] text-xs font-bold">DH</span>
                             <Input
                                 type="number"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
-                                className="pl-7 bg-surface-50 border-white/10 text-white"
+                                className="pl-10 bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                             />
                         </div>
                     </div>

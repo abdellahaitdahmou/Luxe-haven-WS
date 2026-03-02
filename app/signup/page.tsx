@@ -24,10 +24,12 @@ export default function SignupPage() {
         setError(null);
 
         try {
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
             const { error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
+                    emailRedirectTo: `${siteUrl}/auth/confirm`,
                     data: {
                         first_name: firstName,
                         last_name: lastName,
@@ -35,6 +37,7 @@ export default function SignupPage() {
                     }
                 }
             });
+
 
             if (error) {
                 setError(error.message);
@@ -52,7 +55,7 @@ export default function SignupPage() {
     }
 
     return (
-        <main className="min-h-screen bg-black text-white font-sans selection:bg-gold-500 selection:text-black">
+        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] font-sans selection:bg-gold-500 selection:text-black">
             <Navbar />
 
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto flex items-center justify-center min-h-[80vh]">
@@ -63,7 +66,7 @@ export default function SignupPage() {
                                 <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                             </div>
                             <h1 className="text-3xl font-bold mb-3">Account Created!</h1>
-                            <p className="text-gray-400 mb-8">Welcome to Luxe Haven. Check your email to confirm your account if required, then log in to explore our properties.</p>
+                            <p className="text-[var(--muted-text)] mb-8">Welcome to Luxe Haven. Check your email to confirm your account if required, then log in to explore our properties.</p>
                             <Link href="/login" className="inline-block bg-gold-500 hover:bg-gold-400 text-black font-bold px-8 py-3 rounded-full transition">
                                 Sign In Now
                             </Link>
@@ -72,10 +75,10 @@ export default function SignupPage() {
                         <>
                             <div className="text-center mb-10">
                                 <h1 className="text-3xl font-bold mb-2">Create an Account</h1>
-                                <p className="text-gray-400">Join Luxe Haven to book or host luxury stays</p>
+                                <p className="text-[var(--muted-text)]">Join Luxe Haven to book or host luxury stays</p>
                             </div>
 
-                            <div className="bg-surface-50 border border-white/5 p-8 rounded-3xl shadow-2xl">
+                            <div className="bg-[var(--card-bg)] border border-[var(--card-border)] p-6 md:p-8 rounded-3xl shadow-2xl">
                                 <form onSubmit={handleSignup} className="space-y-6">
                                     {error && (
                                         <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-xl text-sm text-center">
@@ -85,49 +88,49 @@ export default function SignupPage() {
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-gray-400">First Name</label>
+                                            <label className="text-sm font-semibold text-[var(--muted-text)]">First Name</label>
                                             <input
                                                 type="text"
                                                 value={firstName}
                                                 onChange={(e) => setFirstName(e.target.value)}
                                                 placeholder="John"
-                                                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                                className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                                 required
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-sm font-semibold text-gray-400">Last Name</label>
+                                            <label className="text-sm font-semibold text-[var(--muted-text)]">Last Name</label>
                                             <input
                                                 type="text"
                                                 value={lastName}
                                                 onChange={(e) => setLastName(e.target.value)}
                                                 placeholder="Doe"
-                                                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                                className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                                 required
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-gray-400">Email Address</label>
+                                        <label className="text-sm font-semibold text-[var(--muted-text)]">Email Address</label>
                                         <input
                                             type="email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="you@example.com"
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                            className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                             required
                                         />
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-gray-400">Password</label>
+                                        <label className="text-sm font-semibold text-[var(--muted-text)]">Password</label>
                                         <input
                                             type="password"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="••••••••"
-                                            className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                            className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                             required
                                             minLength={6}
                                         />
@@ -150,7 +153,7 @@ export default function SignupPage() {
                                     </button>
                                 </form>
 
-                                <p className="text-center text-gray-500 text-sm mt-8">
+                                <p className="text-center text-[var(--muted-text)] text-sm mt-8">
                                     Already have an account? <Link href="/login" className="text-gold-500 hover:underline font-semibold">Log in</Link>
                                 </p>
                             </div>

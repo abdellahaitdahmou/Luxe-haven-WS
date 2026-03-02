@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
     ChevronLeft, ChevronRight, Calendar as CalendarIcon,
-    User, Loader2, DollarSign, Building2, SlidersHorizontal,
+    User, Loader2, Coins, Building2, SlidersHorizontal,
     Plus, Minus, X
 } from "lucide-react";
 import {
@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { Percent, Sparkles, Layers } from "lucide-react";
 import { BulkUpdateDialog } from "@/components/admin/calendar/BulkUpdateDialog";
 import { SmartPricingDialog } from "@/components/admin/calendar/SmartPricingDialog";
+import { MobileCalendar } from "@/components/admin/calendar/MobileCalendar";
 
 // Helper to generate the pill style for a booking
 const getBookingStyle = (date: Date, booking: any) => {
@@ -42,7 +43,7 @@ const getBookingStyle = (date: Date, booking: any) => {
     // Status colors
     if (booking.status === 'confirmed') className += "bg-green-600 text-white ";
     else if (booking.status === 'pending') className += "bg-yellow-600 text-white ";
-    else if (booking.status === 'cancelled') className += "bg-red-600/50 text-white/50 ";
+    else if (booking.status === 'cancelled') className += "bg-red-600/50 text-[var(--muted-text)] ";
     else className += "bg-gray-600 text-white ";
 
     // Border radius for start/end
@@ -292,17 +293,17 @@ export default function MasterCalendarPage() {
 
     return (
         <div className="flex flex-col h-[calc(100vh-2rem)] max-w-[100vw] overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 px-1">
+            {/* Header -- desktop */}
+            <div className="hidden md:flex items-center justify-between mb-6 px-1">
                 <div className="flex items-center gap-4">
-                    <h1 className="text-3xl font-bold text-white">Master Calendar</h1>
-                    <span className="text-sm text-gray-400">({filteredProperties.length} listings)</span>
+                    <h1 className="text-3xl font-bold text-[var(--page-text)]">Master Calendar</h1>
+                    <span className="text-sm text-[var(--muted-text)]">({filteredProperties.length} listings)</span>
 
                     <div className="flex gap-2 ml-4">
                         <Button
                             variant="outline"
                             size="sm"
-                            className="bg-surface-50 border-white/10 text-gray-300 gap-2 hover:text-white hover:bg-white/10"
+                            className="bg-[var(--card-bg)] border-white/10 text-[var(--muted-text)] gap-2 hover:text-white hover:bg-white/10"
                             onClick={() => setBulkUpdateOpen(true)}
                         >
                             <Layers className="w-4 h-4" />
@@ -326,16 +327,16 @@ export default function MasterCalendarPage() {
                             placeholder="Search properties..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-64 bg-surface-50 border-white/10 text-white pl-8 focus:border-gold-500"
+                            className="w-64 bg-[var(--card-bg)] border-white/10 text-white pl-8 focus:border-gold-500"
                         />
-                        <div className="absolute left-2.5 top-2.5 text-gray-400">
+                        <div className="absolute left-2.5 top-2.5 text-[var(--muted-text)]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                         </div>
                     </div>
 
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button variant="outline" className={`gap-2 border-white/10 ${activeFilterCount > 0 ? 'bg-gold-500/10 border-gold-500/50 text-gold-500' : 'bg-surface-50 text-white'}`}>
+                            <Button variant="outline" className={`gap-2 border-white/10 ${activeFilterCount > 0 ? 'bg-gold-500/10 border-gold-500/50 text-gold-500' : 'bg-[var(--card-bg)] text-[var(--page-text)]'}`}>
                                 <SlidersHorizontal className="w-4 h-4" />
                                 Filters
                                 {activeFilterCount > 0 && (
@@ -345,11 +346,11 @@ export default function MasterCalendarPage() {
                                 )}
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent align="end" className="w-80 bg-surface-100 border-white/10 text-white p-5">
+                        <PopoverContent align="end" className="w-80 bg-[var(--surface-100)] border-white/10 text-white p-5">
                             <div className="space-y-6">
                                 <h3 className="font-semibold text-lg">Filters</h3>
                                 <div className="space-y-4">
-                                    <h4 className="text-sm font-medium text-gray-400">Rooms and beds</h4>
+                                    <h4 className="text-sm font-medium text-[var(--muted-text)]">Rooms and beds</h4>
                                     {['bedrooms', 'beds', 'bathrooms'].map((field) => (
                                         <div key={field} className="flex items-center justify-between">
                                             <span className="text-sm capitalize">{field}</span>
@@ -367,7 +368,7 @@ export default function MasterCalendarPage() {
                                 </div>
                                 <div className="h-px bg-white/10" />
                                 <div className="space-y-4">
-                                    <h4 className="text-sm font-medium text-gray-400">Amenities</h4>
+                                    <h4 className="text-sm font-medium text-[var(--muted-text)]">Amenities</h4>
                                     <div className="grid grid-cols-2 gap-3">
                                         {AMENITIES_LIST.map((amenity) => (
                                             <div key={amenity} className="flex items-center space-x-2">
@@ -382,7 +383,7 @@ export default function MasterCalendarPage() {
                                     </div>
                                 </div>
                                 <div className="pt-2 flex justify-between items-center">
-                                    <Button variant="ghost" className="text-sm text-gray-400 hover:text-white px-0" onClick={clearFilters}>
+                                    <Button variant="ghost" className="text-sm text-[var(--muted-text)] hover:text-white px-0" onClick={clearFilters}>
                                         Clear all
                                     </Button>
                                     <Button className="bg-gold-500 text-black hover:bg-gold-400">
@@ -395,7 +396,7 @@ export default function MasterCalendarPage() {
 
                     <div className="h-8 w-px bg-white/10 mx-2" />
 
-                    <div className="flex items-center bg-surface-50 rounded-lg border border-white/10 p-1">
+                    <div className="flex items-center bg-[var(--card-bg)] rounded-lg border border-white/10 p-1">
                         <Button variant="ghost" size="icon" onClick={() => setCurrentDate(subMonths(currentDate, 1))} className="hover:bg-white/5">
                             <ChevronLeft className="w-4 h-4" />
                         </Button>
@@ -411,13 +412,48 @@ export default function MasterCalendarPage() {
                 </div>
             </div>
 
-            {/* Calendar Container */}
-            <div className="flex-1 border border-white/10 rounded-xl bg-surface-50 overflow-hidden flex flex-col">
+            {/* Mobile Header */}
+            <div className="md:hidden flex items-center justify-between mb-4 px-1">
+                <div>
+                    <h1 className="text-2xl font-bold text-[var(--page-text)]">Master Calendar</h1>
+                    <p className="text-xs text-[var(--muted-text)]">{filteredProperties.length} listings</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setBulkUpdateOpen(true)}
+                        className="p-2 rounded-full bg-[var(--surface-100)] border border-[var(--card-border)] text-[var(--muted-text)] hover:text-[var(--page-text)] transition"
+                        title="Bulk Update"
+                    >
+                        <Layers className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={() => setSmartPricingOpen(true)}
+                        className="p-2 rounded-full bg-gradient-to-r from-gold-600 to-gold-400 text-black shadow-lg shadow-gold-500/20 transition"
+                        title="Smart Pricing"
+                    >
+                        <Sparkles className="w-4 h-4" />
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Calendar View */}
+            <div className="md:hidden flex-1 overflow-y-auto pb-8 px-1 space-y-4">
+                <MobileCalendar
+                    properties={filteredProperties}
+                    bookings={bookings}
+                    dailyPrices={dailyPrices}
+                    currentDate={currentDate}
+                    onMonthChange={setCurrentDate}
+                />
+            </div>
+
+            {/* Desktop Calendar Container */}
+            <div className="hidden md:flex flex-1 border border-white/10 rounded-xl bg-[var(--card-bg)] overflow-hidden flex-col">
                 <div className="overflow-auto flex-1 relative">
                     <div className="inline-block min-w-full">
                         {/* Header Row */}
-                        <div className="flex sticky top-0 z-30 bg-surface-100 border-b border-white/10 isolate">
-                            <div className="sticky left-0 w-64 shrink-0 bg-black border-r border-white/10 p-4 font-bold text-gray-400 z-50 shadow-[10px_0_20px_-5px_rgba(0,0,0,0.5)] flex items-center justify-between">
+                        <div className="flex sticky top-0 z-30 bg-[var(--surface-100)] border-b border-white/10 isolate">
+                            <div className="sticky left-0 w-64 shrink-0 bg-black border-r border-white/10 p-4 font-bold text-[var(--muted-text)] z-50 shadow-[10px_0_20px_-5px_rgba(0,0,0,0.5)] flex items-center justify-between">
                                 <span>Properties</span>
                                 <span className="text-xs font-normal opacity-50">{filteredProperties.length} found</span>
                             </div>
@@ -425,8 +461,8 @@ export default function MasterCalendarPage() {
                                 const isToday = isSameDay(day, new Date());
                                 return (
                                     <div key={day.toString()} className={`w-32 shrink-0 border-r border-white/5 p-2 text-center flex flex-col gap-1 ${isToday ? 'bg-gold-500/10' : ''}`}>
-                                        <span className="text-xs text-gray-400 uppercase">{format(day, "EEE")}</span>
-                                        <span className={`text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto ${isToday ? 'bg-gold-500 text-black' : 'text-white'}`}>
+                                        <span className="text-xs text-[var(--muted-text)] uppercase">{format(day, "EEE")}</span>
+                                        <span className={`text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center mx-auto ${isToday ? 'bg-gold-500 text-black' : 'text-[var(--page-text)]'}`}>
                                             {format(day, "d")}
                                         </span>
                                     </div>
@@ -436,7 +472,7 @@ export default function MasterCalendarPage() {
 
                         {/* Property Rows */}
                         {filteredProperties.length === 0 ? (
-                            <div className="p-8 text-center text-gray-400">No properties match your filters.</div>
+                            <div className="p-8 text-center text-[var(--muted-text)]">No properties match your filters.</div>
                         ) : (
                             filteredProperties.map((property) => (
                                 <div key={property.id} className="flex border-b border-white/5 hover:bg-white/5 transition-colors group isolate">
@@ -449,13 +485,13 @@ export default function MasterCalendarPage() {
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-500"><Building2 className="w-5 h-5" /></div>
+                                                <div className="w-full h-full flex items-center justify-center text-[var(--muted-text)]"><Building2 className="w-5 h-5" /></div>
                                             )}
                                         </div>
                                         <div className="min-w-0">
                                             <p className="font-bold text-sm text-white truncate">{property.title}</p>
-                                            <div className="flex items-center gap-2 text-xs text-gray-400">
-                                                <span>${property.price_per_night}</span>
+                                            <div className="flex items-center gap-2 text-xs text-[var(--muted-text)]">
+                                                <span>{property.price_per_night} DH</span>
                                                 {property.bedrooms > 0 && <span>• {property.bedrooms} BR</span>}
                                             </div>
                                             <Button
@@ -493,41 +529,41 @@ export default function MasterCalendarPage() {
                                                                     <span className="truncate flex items-center gap-1">
                                                                         <Avatar className="w-4 h-4 border border-white/20">
                                                                             <AvatarImage src={booking.profiles?.avatar_url} />
-                                                                            <AvatarFallback className="text-[8px] bg-black text-white">{booking.profiles?.full_name?.charAt(0)}</AvatarFallback>
+                                                                            <AvatarFallback className="text-[8px] bg-black text-[var(--page-text)]">{booking.profiles?.full_name?.charAt(0)}</AvatarFallback>
                                                                         </Avatar>
                                                                         {booking.profiles?.full_name}
                                                                     </span>
                                                                 )}
                                                             </div>
                                                         </DialogTrigger>
-                                                        <DialogContent className="bg-surface-100 border-white/10 text-white">
+                                                        <DialogContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                                                             <DialogHeader><DialogTitle>Booking Details</DialogTitle></DialogHeader>
                                                             <div className="space-y-4">
-                                                                <div className="flex items-center gap-3 p-3 bg-surface-50 rounded-lg">
+                                                                <div className="flex items-center gap-3 p-3 bg-[var(--card-bg)] rounded-lg">
                                                                     <Avatar className="w-12 h-12">
                                                                         <AvatarImage src={booking.profiles?.avatar_url} />
                                                                         <AvatarFallback>{booking.profiles?.full_name?.charAt(0)}</AvatarFallback>
                                                                     </Avatar>
                                                                     <div>
                                                                         <p className="font-bold">{booking.profiles?.full_name}</p>
-                                                                        <p className="text-sm text-gray-400">{booking.profiles?.email}</p>
+                                                                        <p className="text-sm text-[var(--muted-text)]">{booking.profiles?.email}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div className="grid grid-cols-2 gap-4">
                                                                     <div>
-                                                                        <p className="text-xs text-gray-500 uppercase">Check In</p>
+                                                                        <p className="text-xs text-[var(--muted-text)] uppercase">Check In</p>
                                                                         <p className="font-medium">{format(new Date(booking.check_in_date), "PPP")}</p>
                                                                     </div>
                                                                     <div>
-                                                                        <p className="text-xs text-gray-500 uppercase">Check Out</p>
+                                                                        <p className="text-xs text-[var(--muted-text)] uppercase">Check Out</p>
                                                                         <p className="font-medium">{format(new Date(booking.check_out_date), "PPP")}</p>
                                                                     </div>
                                                                     <div>
-                                                                        <p className="text-xs text-gray-500 uppercase">Total Price</p>
-                                                                        <p className="font-bold text-gold-500">${booking.total_price}</p>
+                                                                        <p className="text-xs text-[var(--muted-text)] uppercase">Total Price</p>
+                                                                        <p className="font-bold text-gold-500">{booking.total_price} DH</p>
                                                                     </div>
                                                                     <div>
-                                                                        <p className="text-xs text-gray-500 uppercase">Status</p>
+                                                                        <p className="text-xs text-[var(--muted-text)] uppercase">Status</p>
                                                                         <Badge variant="outline" className="capitalize">{booking.status}</Badge>
                                                                     </div>
                                                                 </div>
@@ -543,9 +579,9 @@ export default function MasterCalendarPage() {
                                                     >
                                                         <span className={`text-xs font-mono transition-all ${isOverridden
                                                             ? "text-black bg-green-400 px-2 py-0.5 rounded-full font-bold shadow-sm shadow-green-900/50"
-                                                            : "text-gray-500 group-hover/cell:text-white group-hover/cell:scale-110"
+                                                            : "text-[var(--muted-text)] group-hover/cell:text-white group-hover/cell:scale-110"
                                                             }`}>
-                                                            ${displayPrice}
+                                                            {displayPrice} DH
                                                         </span>
                                                     </div>
                                                 )}
@@ -561,7 +597,7 @@ export default function MasterCalendarPage() {
 
             {/* Price Update Dialog */}
             <Dialog open={priceUpdateOpen} onOpenChange={setPriceUpdateOpen}>
-                <DialogContent className="bg-surface-100 border-white/10 text-white sm:max-w-[425px]">
+                <DialogContent className="bg-[var(--surface-100)] border-white/10 text-white sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>Update Price</DialogTitle>
                     </DialogHeader>
@@ -569,20 +605,20 @@ export default function MasterCalendarPage() {
                         <div className="grid gap-4 py-4">
                             <div className="space-y-2">
                                 <Label>Date</Label>
-                                <div className="text-sm text-gray-400 font-medium">
+                                <div className="text-sm text-[var(--muted-text)] font-medium">
                                     {format(selectedPriceData.date, "EEEE, MMMM do, yyyy")}
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="price">Price per night</Label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-2.5 text-gray-400">$</span>
+                                    <span className="absolute left-3 top-2.5 text-[var(--muted-text)] text-xs font-bold">DH</span>
                                     <Input
                                         id="price"
                                         type="number"
                                         value={newPrice}
                                         onChange={(e) => setNewPrice(e.target.value)}
-                                        className="pl-7 bg-surface-50 border-white/10 text-white"
+                                        className="pl-10 bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                                     />
                                 </div>
                             </div>
@@ -597,7 +633,7 @@ export default function MasterCalendarPage() {
 
             {/* Discount Dialog */}
             <Dialog open={discountOpen} onOpenChange={setDiscountOpen}>
-                <DialogContent className="bg-surface-100 border-white/10 text-white sm:max-w-[425px]">
+                <DialogContent className="bg-[var(--surface-100)] border-white/10 text-white sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle>Manage Discounts</DialogTitle>
                     </DialogHeader>
@@ -616,11 +652,11 @@ export default function MasterCalendarPage() {
                                         placeholder="e.g. 10"
                                         value={weeklyDiscount}
                                         onChange={(e) => setWeeklyDiscount(e.target.value)}
-                                        className="bg-surface-50 border-white/10 text-white"
+                                        className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                                     />
-                                    <span className="absolute right-3 top-2.5 text-gray-400">%</span>
+                                    <span className="absolute right-3 top-2.5 text-[var(--muted-text)]">%</span>
                                 </div>
-                                <p className="text-xs text-gray-400">Applies to stays of 7 nights or more</p>
+                                <p className="text-xs text-[var(--muted-text)]">Applies to stays of 7 nights or more</p>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="monthly">Monthly Discount (%)</Label>
@@ -631,15 +667,15 @@ export default function MasterCalendarPage() {
                                         placeholder="e.g. 20"
                                         value={monthlyDiscount}
                                         onChange={(e) => setMonthlyDiscount(e.target.value)}
-                                        className="bg-surface-50 border-white/10 text-white"
+                                        className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                                     />
-                                    <span className="absolute right-3 top-2.5 text-gray-400">%</span>
+                                    <span className="absolute right-3 top-2.5 text-[var(--muted-text)]">%</span>
                                 </div>
-                                <p className="text-xs text-gray-400">Applies to stays of 28 nights or more</p>
+                                <p className="text-xs text-[var(--muted-text)]">Applies to stays of 28 nights or more</p>
                             </div>
                         </TabsContent>
                         <TabsContent value="custom">
-                            <div className="py-4 text-center text-gray-400">
+                            <div className="py-4 text-center text-[var(--muted-text)]">
                                 Advanced rules coming soon...
                             </div>
                         </TabsContent>

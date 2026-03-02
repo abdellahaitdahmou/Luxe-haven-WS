@@ -55,6 +55,10 @@ export default function EditPropertyPage() {
     const [bathrooms, setBathrooms] = useState(1);
     const [amenities, setAmenities] = useState<string[]>([]);
     const [propertyType, setPropertyType] = useState("villa");
+    const [listingType, setListingType] = useState("rent");
+    const [priceType, setPriceType] = useState("per_night");
+    const [propertyCategory, setPropertyCategory] = useState("residential");
+    const [surfaceArea, setSurfaceArea] = useState("");
 
     // Unified Image State
     const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
@@ -90,6 +94,10 @@ export default function EditPropertyPage() {
                 setBeds(data.beds || 1);
                 setBathrooms(data.bathrooms || 1);
                 setPropertyType(data.property_type || "villa");
+                setListingType(data.listing_type || "rent");
+                setPriceType(data.price_type || "per_night");
+                setPropertyCategory(data.property_type === "office" ? "office" : "residential");
+                setSurfaceArea(data.surface_area ? data.surface_area.toString() : "");
 
                 // Ensure amenities is an array (handle null or empty object {})
                 const amenitiesArray = Array.isArray(data.amenities) ? data.amenities : [];
@@ -320,7 +328,10 @@ export default function EditPropertyPage() {
                     description,
                     price_per_night: parseFloat(price),
                     address,
-                    property_type: propertyType,
+                    property_type: propertyCategory === 'office' ? 'office' : propertyType,
+                    listing_type: propertyCategory === 'office' ? 'rent' : listingType,
+                    price_type: propertyCategory === 'office' ? 'per_month' : priceType,
+                    surface_area: propertyCategory === 'office' ? (parseInt(surfaceArea) || null) : null,
                     max_guests: maxGuests,
                     bedrooms,
                     beds,
@@ -373,54 +384,120 @@ export default function EditPropertyPage() {
                 <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-gold-500 border-b border-white/10 pb-2">Basic Information</h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-400">Property Title</label>
-                            <input
-                                required
-                                type="text"
-                                value={title}
-                                onChange={e => setTitle(e.target.value)}
-                                placeholder="e.g. Luxury Ocean Villa"
-                                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
-                            />
+                    <div className="space-y-2 mb-6">
+                        <label className="text-sm font-semibold text-gray-400">Property Category</label>
+                        <div className="grid grid-cols-2 gap-2">
+                            <button
+                                type="button"
+                                onClick={() => { setPropertyCategory("residential"); setPropertyType("villa"); setPriceType("per_night"); setListingType("rent"); }}
+                                className={`py-3 px-3 rounded-xl border text-sm font-semibold transition ${propertyCategory === "residential" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'}`}
+                            >Residential Property</button>
+                            <button
+                                type="button"
+                                onClick={() => { setPropertyCategory("office"); setPropertyType("office"); setPriceType("per_month"); setListingType("rent"); }}
+                                className={`py-3 px-3 rounded-xl border text-sm font-semibold transition ${propertyCategory === "office" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'}`}
+                            >Business Office</button>
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-400">Price per Night ($)</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gold-500 font-bold text-lg pointer-events-none">$</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                            {propertyCategory === 'residential' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-gray-400">Service Type</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => { setListingType("rent"); setPriceType("per_night"); }}
+                                            className={`py-2 px-3 rounded-xl border text-sm font-semibold transition ${listingType === "rent" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'}`}
+                                        >Rent</button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setListingType("sale"); setPriceType("fixed"); }}
+                                            className={`py-2 px-3 rounded-xl border text-sm font-semibold transition ${listingType === "sale" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'}`}
+                                        >Sale</button>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-gray-400">Property Title</label>
                                 <input
                                     required
-                                    type="number"
-                                    value={price}
-                                    onChange={e => setPrice(e.target.value)}
-                                    placeholder="350"
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white focus:border-gold-500 outline-none transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    type="text"
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                    placeholder={propertyCategory === 'office' ? "e.g. Modern Co-working Space" : "e.g. Luxury Ocean Villa"}
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
                                 />
+                            </div>
+
+                            {propertyCategory === 'office' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-gray-400">Surface Area (m²)</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={surfaceArea}
+                                        onChange={e => setSurfaceArea(e.target.value)}
+                                        placeholder="e.g. 150"
+                                        className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-gray-400">Pricing Method</label>
+                                <select
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition appearance-none"
+                                    value={propertyCategory === 'office' ? 'per_month' : priceType}
+                                    onChange={e => setPriceType(e.target.value)}
+                                    disabled={propertyCategory === 'office'}
+                                >
+                                    {propertyCategory === 'residential' && <option value="per_night">Per Night (Stays)</option>}
+                                    <option value="per_month">Per Month ({propertyCategory === 'office' ? 'Rent' : 'Long Term'})</option>
+                                    {propertyCategory === 'residential' && <option value="fixed">Fixed Price (Sale)</option>}
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-gray-400">Price {priceType === 'fixed' ? 'Total' : priceType === 'per_month' ? 'per Month' : 'per Night'} (DH)</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500 font-bold text-sm pointer-events-none">DH</span>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={price}
+                                        onChange={e => setPrice(e.target.value)}
+                                        placeholder={priceType === 'fixed' ? "500000" : "350"}
+                                        className="w-full bg-black/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:border-gold-500 outline-none transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Property Type Selector */}
-                    <div className="space-y-3">
-                        <label className="text-sm font-semibold text-gray-400">Property Type</label>
-                        <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
-                            {PROPERTY_TYPES.map(pt => (
-                                <button
-                                    key={pt.value}
-                                    type="button"
-                                    onClick={() => setPropertyType(pt.value)}
-                                    className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border transition text-center ${propertyType === pt.value
-                                        ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                                        : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'
-                                        }`}
-                                >
-                                    <span className="text-2xl">{pt.emoji}</span>
-                                    <span className="text-xs font-medium">{pt.label}</span>
-                                </button>
-                            ))}
+                    {propertyCategory === 'residential' && (
+                        <div className="space-y-3">
+                            <label className="text-sm font-semibold text-gray-400">Property Type</label>
+                            <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                                {PROPERTY_TYPES.map(pt => (
+                                    <button
+                                        key={pt.value}
+                                        type="button"
+                                        onClick={() => setPropertyType(pt.value)}
+                                        className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border transition text-center ${propertyType === pt.value
+                                            ? 'border-gold-500 bg-gold-500/10 text-gold-400'
+                                            : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'
+                                            }`}
+                                    >
+                                        <span className="text-2xl">{pt.emoji}</span>
+                                        <span className="text-xs font-medium">{pt.label}</span>
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-400">Description</label>
@@ -457,9 +534,11 @@ export default function EditPropertyPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {([
-                            { label: "Guests", icon: Users, value: maxGuests, set: setMaxGuests, min: 1, step: 1 },
-                            { label: "Bedrooms", icon: BedDouble, value: bedrooms, set: setBedrooms, min: 0, step: 1 },
-                            { label: "Beds", icon: BedIcon, value: beds, set: setBeds, min: 0, step: 1 },
+                            { label: "Guests/Capacity", icon: Users, value: maxGuests, set: setMaxGuests, min: 1, step: 1 },
+                            ...(propertyCategory === 'residential' ? [
+                                { label: "Bedrooms", icon: BedDouble, value: bedrooms, set: setBedrooms, min: 0, step: 1 },
+                                { label: "Beds", icon: BedIcon, value: beds, set: setBeds, min: 0, step: 1 }
+                            ] : []),
                             { label: "Bathrooms", icon: Bath, value: bathrooms, set: setBathrooms, min: 0, step: 0.5 },
                         ] as Array<{ label: string, icon: any, value: number, set: (v: number) => void, min: number, step: number }>).map(({ label, icon: Icon, value, set, min, step }) => (
                             <div key={label} className="flex items-center justify-between bg-black/30 border border-white/10 rounded-2xl px-5 py-4 hover:border-white/20 transition">
@@ -559,7 +638,7 @@ export default function EditPropertyPage() {
                                     <p className="text-sm">Click &quot;Add Images&quot; to upload.</p>
                                 </div>
                             ) : (
-                                <div className="flex flex-wrap gap-4">
+                                <div className="grid grid-cols-2 md:flex md:flex-wrap gap-4">
                                     <AnimatePresence>
                                         {mediaItems.map((item, index) => (
                                             <motion.div
@@ -574,7 +653,7 @@ export default function EditPropertyPage() {
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.8 }}
                                                 transition={{ duration: 0.2 }}
-                                                className="relative w-40 h-56 rounded-xl overflow-hidden border border-white/10 bg-gray-900 group cursor-grab active:cursor-grabbing shadow-sm hover:shadow-xl hover:scale-105 transition-shadow z-0 active:z-50 flex flex-col"
+                                                className="relative w-full md:w-40 h-56 rounded-xl overflow-hidden border border-white/10 bg-gray-900 group cursor-grab active:cursor-grabbing shadow-sm hover:shadow-xl hover:scale-105 transition-shadow z-0 active:z-50 flex flex-col"
                                             >
                                                 {/* Image Area */}
                                                 <div className="relative h-40 w-full bg-black">

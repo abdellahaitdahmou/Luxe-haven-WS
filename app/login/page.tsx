@@ -57,17 +57,17 @@ export default function LoginPage() {
     }
 
     return (
-        <main className="min-h-screen bg-black text-white font-sans selection:bg-gold-500 selection:text-black">
+        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] font-sans selection:bg-gold-500 selection:text-black transition-colors duration-300">
             <Navbar />
 
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto flex items-center justify-center min-h-[80vh]">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-10">
                         <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-                        <p className="text-gray-400">Sign in to manage your bookings or listings</p>
+                        <p className="text-[var(--muted-text)]">Sign in to manage your bookings or listings</p>
                     </div>
 
-                    <div className="bg-surface-50 border border-white/5 p-8 rounded-3xl shadow-2xl">
+                    <div className="bg-[var(--card-bg)] border border-[var(--card-border)] p-6 md:p-8 rounded-3xl shadow-2xl">
                         <form onSubmit={handleLogin} className="space-y-6">
                             {error && (
                                 <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-xl text-sm text-center">
@@ -76,20 +76,20 @@ export default function LoginPage() {
                             )}
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-400">Email Address</label>
+                                <label className="text-sm font-semibold text-[var(--muted-text)]">Email Address</label>
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="you@example.com"
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                    className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                     required
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <label className="text-sm font-semibold text-gray-400">Password</label>
+                                    <label className="text-sm font-semibold text-[var(--muted-text)]">Password</label>
                                     <a href="#" className="text-xs text-gold-500 hover:underline">Forgot?</a>
                                 </div>
                                 <input
@@ -97,7 +97,7 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition placeholder-gray-600"
+                                    className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] rounded-xl px-4 py-3 text-[var(--page-text)] focus:border-gold-500 outline-none transition placeholder-gray-500"
                                     required
                                 />
                             </div>
@@ -123,17 +123,17 @@ export default function LoginPage() {
                                     <span className="w-full border-t border-white/10"></span>
                                 </div>
                                 <div className="relative flex justify-center text-xs uppercase">
-                                    <span className="bg-surface-50 px-2 text-gray-500">Or continue with</span>
+                                    <span className="bg-[var(--card-bg)] px-2 text-[var(--muted-text)]">Or continue with</span>
                                 </div>
                             </div>
 
-                            <button type="button" className="w-full bg-black border border-white/10 text-white font-semibold py-3 rounded-xl hover:bg-white/5 transition">
+                            <button type="button" className="w-full bg-[var(--surface-100)] border border-[var(--card-border)] text-[var(--page-text)] font-semibold py-3 rounded-xl hover:opacity-80 transition">
                                 Google
                             </button>
 
                         </form>
 
-                        <p className="text-center text-gray-500 text-sm mt-8">
+                        <p className="text-center text-[var(--muted-text)] text-sm mt-8">
                             Don&apos;t have an account? <Link href="/signup" className="text-gold-500 hover:underline font-semibold">Sign up</Link>
                         </p>
                     </div>

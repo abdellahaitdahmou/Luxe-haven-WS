@@ -131,22 +131,22 @@ export default async function PropertyDetailPage({
     const location = property.address || "Morocco"
 
     return (
-        <main className="min-h-screen bg-black text-white">
+        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] transition-colors duration-300">
             <Navbar />
 
             <div className="pt-24 px-6 max-w-7xl mx-auto pb-24">
                 {/* Breadcrumb */}
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+                <div className="flex items-center gap-2 text-sm text-[var(--muted-text)] mb-6">
                     <Link href="/explore" className="hover:text-gold-500 transition">Properties</Link>
                     <span>›</span>
-                    <span className="text-white line-clamp-1">{property.title}</span>
+                    <span className="text-[var(--page-text)] line-clamp-1">{property.title}</span>
                 </div>
 
                 {/* Title Row */}
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                     <div>
                         <h1 className="text-3xl md:text-4xl font-bold mb-2">{property.title}</h1>
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--muted-text)]">
                             <span className="flex items-center gap-1">
                                 <MapPin className="w-4 h-4 text-gold-500" />
                                 {location}
@@ -182,8 +182,8 @@ export default async function PropertyDetailPage({
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-gray-400 text-sm">Hosted by</p>
-                                    <p className="font-semibold text-white">{property.owner.full_name || "Luxe Haven"}</p>
+                                    <p className="text-[var(--muted-text)] text-sm">Hosted by</p>
+                                    <p className="font-semibold text-[var(--page-text)]">{property.owner.full_name || "Luxe Haven"}</p>
                                 </div>
                             </div>
                         )}
@@ -191,31 +191,31 @@ export default async function PropertyDetailPage({
                         {/* Key Details */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {property.max_guests && (
-                                <div className="flex flex-col items-center gap-2 bg-white/5 rounded-xl p-4 text-center">
+                                <div className="flex flex-col items-center gap-2 bg-[var(--surface-100)] rounded-xl p-4 text-center border border-[var(--card-border)]">
                                     <Users className="w-6 h-6 text-gold-500" />
-                                    <span className="text-white font-semibold">{property.max_guests}</span>
-                                    <span className="text-gray-500 text-xs">Guests</span>
+                                    <span className="text-[var(--page-text)] font-semibold">{property.max_guests}</span>
+                                    <span className="text-[var(--muted-text)] text-xs">Guests</span>
                                 </div>
                             )}
                             {property.bedrooms && (
-                                <div className="flex flex-col items-center gap-2 bg-white/5 rounded-xl p-4 text-center">
+                                <div className="flex flex-col items-center gap-2 bg-[var(--surface-100)] rounded-xl p-4 text-center border border-[var(--card-border)]">
                                     <Bed className="w-6 h-6 text-gold-500" />
-                                    <span className="text-white font-semibold">{property.bedrooms}</span>
-                                    <span className="text-gray-500 text-xs">Bedrooms</span>
+                                    <span className="text-[var(--page-text)] font-semibold">{property.bedrooms}</span>
+                                    <span className="text-[var(--muted-text)] text-xs">Bedrooms</span>
                                 </div>
                             )}
                             {property.beds && (
-                                <div className="flex flex-col items-center gap-2 bg-white/5 rounded-xl p-4 text-center">
+                                <div className="flex flex-col items-center gap-2 bg-[var(--surface-100)] rounded-xl p-4 text-center border border-[var(--card-border)]">
                                     <Bed className="w-6 h-6 text-gold-500" />
-                                    <span className="text-white font-semibold">{property.beds}</span>
-                                    <span className="text-gray-500 text-xs">Beds</span>
+                                    <span className="text-[var(--page-text)] font-semibold">{property.beds}</span>
+                                    <span className="text-[var(--muted-text)] text-xs">Beds</span>
                                 </div>
                             )}
                             {property.bathrooms && (
-                                <div className="flex flex-col items-center gap-2 bg-white/5 rounded-xl p-4 text-center">
+                                <div className="flex flex-col items-center gap-2 bg-[var(--surface-100)] rounded-xl p-4 text-center border border-[var(--card-border)]">
                                     <Bath className="w-6 h-6 text-gold-500" />
-                                    <span className="text-white font-semibold">{property.bathrooms}</span>
-                                    <span className="text-gray-500 text-xs">Bathrooms</span>
+                                    <span className="text-[var(--page-text)] font-semibold">{property.bathrooms}</span>
+                                    <span className="text-[var(--muted-text)] text-xs">Bathrooms</span>
                                 </div>
                             )}
                         </div>
@@ -224,7 +224,7 @@ export default async function PropertyDetailPage({
                         {property.description && (
                             <div>
                                 <h2 className="text-xl font-bold mb-4">About this property</h2>
-                                <p className="text-gray-400 leading-relaxed whitespace-pre-line">{property.description}</p>
+                                <p className="text-[var(--muted-text)] leading-relaxed whitespace-pre-line">{property.description}</p>
                             </div>
                         )}
 
@@ -234,7 +234,7 @@ export default async function PropertyDetailPage({
                                 <h2 className="text-xl font-bold mb-4">What this place offers</h2>
                                 <div className="grid grid-cols-2 gap-3">
                                     {amenities.map((amenity: string) => (
-                                        <div key={amenity} className="flex items-center gap-3 text-gray-300">
+                                        <div key={amenity} className="flex items-center gap-3 text-[var(--page-text)]/80">
                                             <span className="text-gold-500">
                                                 {AMENITY_ICONS[amenity] || <CheckCircle className="w-5 h-5" />}
                                             </span>
@@ -264,16 +264,16 @@ export default async function PropertyDetailPage({
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <p className="font-semibold text-white text-sm">{review.reviewer?.full_name || "Guest"}</p>
-                                                    <p className="text-gray-500 text-xs">{new Date(review.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
+                                                    <p className="font-semibold text-[var(--page-text)] text-sm">{review.reviewer?.full_name || "Guest"}</p>
+                                                    <p className="text-[var(--muted-text)] text-xs">{new Date(review.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
                                                 </div>
                                                 <div className="ml-auto flex items-center gap-0.5">
                                                     {Array.from({ length: 5 }).map((_, i) => (
-                                                        <Star key={i} className={`w-3 h-3 ${i < (review.rating || 0) ? "fill-gold-500 text-gold-500" : "text-gray-700"}`} />
+                                                        <Star key={i} className={`w-3 h-3 ${i < (review.rating || 0) ? "fill-gold-500 text-gold-500" : "text-[var(--surface-200)]"}`} />
                                                     ))}
                                                 </div>
                                             </div>
-                                            <p className="text-gray-400 text-sm leading-relaxed">{review.comment}</p>
+                                            <p className="text-[var(--muted-text)] text-sm leading-relaxed">{review.comment}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -290,6 +290,8 @@ export default async function PropertyDetailPage({
                             propertyId={property.id}
                             ownerId={property.owner_id || undefined}
                             isLoggedIn={!!user}
+                            listingType={property.listing_type}
+                            priceType={property.price_type}
                         />
                     </div>
                 </div>

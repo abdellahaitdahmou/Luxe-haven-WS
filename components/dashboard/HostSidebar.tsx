@@ -29,45 +29,45 @@ export function HostSidebar({ mobile }: { mobile?: boolean }) {
             </div>
             <nav className="space-y-2 flex-col flex h-full">
                 <div className="space-y-2">
-                    <Link href="/dashboard" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Home className="w-5 h-5" />
                         <span>Overview</span>
                     </Link>
-                    <Link href="/dashboard/calendar" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/calendar" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Calendar className="w-5 h-5" />
                         <span>My Calendar</span>
                     </Link>
-                    <Link href="/dashboard/bookings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/bookings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Calendar className="w-5 h-5" />
                         <span>Bookings</span>
                     </Link>
-                    <Link href="/dashboard/messages" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/messages" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <MessageCircle className="w-5 h-5" />
                         <span>Messages</span>
                         <UnreadMessageBadge />
                     </Link>
-                    <Link href="/dashboard/payouts" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/payouts" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <CreditCard className="w-5 h-5" />
                         <span>Payout Methods</span>
                     </Link>
-                    <Link href="/dashboard/wallet" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/wallet" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <DollarSign className="w-5 h-5" />
                         <span>My Wallet</span>
                     </Link>
-                    <Link href="/dashboard/settings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/settings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Settings className="w-5 h-5" />
                         <span>Settings</span>
                     </Link>
                 </div>
 
-                <div className="mt-auto space-y-2 pt-4 border-t border-white/10">
+                <div className="mt-auto space-y-2 pt-4 border-t border-[var(--card-border)]">
                     <Link href="/admin" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-gold-500/10 text-gold-500 hover:text-gold-400 transition-colors">
                         <LayoutDashboard className="w-5 h-5" />
                         <span>Back to Admin</span>
                     </Link>
                     <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-500 transition-colors text-left"
+                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-red-500/10 text-[var(--muted-text)] hover:text-red-500 transition-colors text-left"
                     >
                         <LogOut className="w-5 h-5" />
                         <span>Sign Out</span>

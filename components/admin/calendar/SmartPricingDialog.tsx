@@ -123,13 +123,13 @@ export function SmartPricingDialog({ open, onOpenChange, properties, onUpdate }:
                         <div className="space-y-2">
                             <Label>Property</Label>
                             <Select value={selectedPropertyId} onValueChange={setSelectedPropertyId}>
-                                <SelectTrigger className="bg-surface-50 border-white/10 text-white">
+                                <SelectTrigger className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                                     <SelectValue placeholder="Select property" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-surface-100 border-white/10 text-white">
+                                <SelectContent className="bg-surface-100 border-white/10 text-[var(--page-text)]">
                                     {properties.map((p) => (
                                         <SelectItem key={p.id} value={p.id}>
-                                            {p.title} (${p.price_per_night})
+                                            {p.title} ({p.price_per_night} DH)
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -137,8 +137,8 @@ export function SmartPricingDialog({ open, onOpenChange, properties, onUpdate }:
                         </div>
                         <div className="space-y-2">
                             <Label>Target Month</Label>
-                            <div className="flex items-center border border-white/10 rounded-md bg-surface-50 px-3 h-9">
-                                <Calendar className="w-4 h-4 mr-2 text-gray-400" />
+                            <div className="flex items-center border border-white/10 rounded-md bg-[var(--card-bg)] px-3 h-9">
+                                <Calendar className="w-4 h-4 mr-2 text-[var(--muted-text)]" />
                                 <span className="text-sm">{format(targetMonth, "MMMM yyyy")}</span>
                             </div>
                             {/* Simple month navigation could be added here, currently just shows current month context */}
@@ -152,7 +152,7 @@ export function SmartPricingDialog({ open, onOpenChange, properties, onUpdate }:
                                 <div
                                     key={s.id}
                                     onClick={() => setStrategy(s.id)}
-                                    className={`cursor-pointer border rounded-lg p-3 text-center transition-all ${strategy === s.id ? 'bg-gold-500/20 border-gold-500 text-gold-500' : 'bg-surface-50 border-white/10 hover:bg-surface-50/80'}`}
+                                    className={`cursor-pointer border rounded-lg p-3 text-center transition-all ${strategy === s.id ? 'bg-gold-500/20 border-gold-500 text-gold-500' : 'bg-[var(--card-bg)] border-white/10 hover:bg-surface-50/80'}`}
                                 >
                                     <div className="font-bold text-sm">{s.label}</div>
                                     <div className="text-[10px] opacity-70 mt-1">{s.description}</div>
@@ -170,19 +170,19 @@ export function SmartPricingDialog({ open, onOpenChange, properties, onUpdate }:
                         </div>
                     ) : (
                         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                            <div className="bg-surface-50 border border-white/10 rounded-lg p-4">
-                                <h4 className="font-bold mb-3 text-sm text-gray-400">Preview: {format(targetMonth, "MMMM")}</h4>
+                            <div className="bg-[var(--card-bg)] border border-white/10 rounded-lg p-4">
+                                <h4 className="font-bold mb-3 text-sm text-[var(--muted-text)]">Preview: {format(targetMonth, "MMMM")}</h4>
                                 <div className="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
                                     {simulation.filter((_, i) => i % 5 === 0 || i === simulation.length - 1).map((item) => ( // Show sample to save space
                                         <div key={item.date} className="flex justify-between text-sm border-b border-white/5 pb-1">
                                             <span>{format(parseISO(item.date), "MMM d")}</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs text-gray-500">{item.reason}</span>
-                                                <span className="font-mono text-gold-500">${item.price}</span>
+                                                <span className="text-xs text-[var(--muted-text)]">{item.reason}</span>
+                                                <span className="font-mono text-gold-500">{item.price} DH</span>
                                             </div>
                                         </div>
                                     ))}
-                                    <div className="text-center text-xs text-gray-500 pt-2">
+                                    <div className="text-center text-xs text-[var(--muted-text)] pt-2">
                                         ...and {simulation.length - 7} more days
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, Users, Building2, Calendar, Loader2 } from "lucide-react";
+import { TrendingUp, Users, Building2, Calendar, Loader2 } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -77,55 +77,55 @@ function AdminDashboardContent() {
     return (
         <div className="space-y-8 max-w-7xl mx-auto">
             <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
-                <p className="text-gray-400">Platform overview and system health.</p>
+                <h1 className="text-3xl font-bold text-[var(--page-text)] mb-2">Admin Dashboard</h1>
+                <p className="text-[var(--muted-text)]">Platform overview and system health.</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Total Revenue</CardTitle>
-                        <DollarSign className="h-4 w-4 text-gold-500" />
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Total Revenue</CardTitle>
+                        <TrendingUp className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</div>
-                        <p className="text-xs text-gray-400 mt-1">Platform fees collected</p>
+                        <div className="text-2xl font-bold">{stats.totalRevenue.toFixed(2)} DH</div>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">Platform fees collected</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Total Users</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Total Users</CardTitle>
                         <Users className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.totalUsers}</div>
-                        <p className="text-xs text-gray-400 mt-1">Guests & Hosts</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">Guests & Hosts</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Total Properties</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Total Properties</CardTitle>
                         <Building2 className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.totalProperties}</div>
-                        <p className="text-xs text-gray-400 mt-1">Active Listings</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">Active Listings</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Total Bookings</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Total Bookings</CardTitle>
                         <Calendar className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.totalBookings}</div>
-                        <p className="text-xs text-gray-400 mt-1">All time</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">All time</p>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Platform Analytics Chart */}
-            <Card className="bg-surface-50 border-white/10 text-white p-6">
+            <Card className="bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--page-text)] p-6">
                 <CardHeader className="px-0 pt-0">
                     <CardTitle className="text-lg">Platform Growth — {CURRENT_YEAR}</CardTitle>
                 </CardHeader>
@@ -143,19 +143,19 @@ function AdminDashboardContent() {
                                         <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--card-border)" opacity={0.1} />
                                 <XAxis dataKey="name" stroke="#6B7280" fontSize={12} />
-                                <YAxis yAxisId="left" stroke="#6B7280" fontSize={12} tickFormatter={(v) => `$${v}`} />
+                                <YAxis yAxisId="left" stroke="#6B7280" fontSize={12} tickFormatter={(v) => `${v} DH`} />
                                 <YAxis yAxisId="right" orientation="right" stroke="#6B7280" fontSize={12} />
                                 <Tooltip
                                     contentStyle={{
-                                        backgroundColor: "#1a1a1a",
-                                        border: "1px solid rgba(255,255,255,0.1)",
+                                        backgroundColor: "var(--card-bg)",
+                                        border: "1px solid var(--card-border)",
                                         borderRadius: "8px",
-                                        color: "#fff",
+                                        color: "var(--page-text)",
                                     }}
                                     formatter={(value: any, name: any) => [
-                                        name === "revenue" ? `$${Number(value || 0).toLocaleString()}` : value,
+                                        name === "revenue" ? `${Number(value || 0).toLocaleString()} DH` : value,
                                         name === "revenue" ? "Revenue" : "Bookings",
                                     ]}
                                 />

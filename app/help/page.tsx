@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 
 export default function HelpPage() {
     return (
-        <main className="min-h-screen bg-black text-white font-sans selection:bg-gold-500 selection:text-black">
+        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] font-sans selection:bg-gold-500 selection:text-black">
             <Navbar />
 
             <div className="pt-32 pb-20 px-6 max-w-4xl mx-auto">
@@ -13,7 +13,7 @@ export default function HelpPage() {
 
                 {/* Search Bar */}
                 <div className="relative max-w-xl mx-auto mb-16">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted-text)]" />
                     <input
                         type="text"
                         placeholder="Search for articles..."
@@ -35,8 +35,8 @@ export default function HelpPage() {
                         ].map((question, i) => (
                             <div key={i} className="group cursor-pointer">
                                 <div className="flex justify-between items-center py-4 border-b border-white/5">
-                                    <h3 className="font-medium text-gray-300 group-hover:text-gold-500 transition">{question}</h3>
-                                    <span className="text-gray-500 group-hover:text-gold-500">+</span>
+                                    <h3 className="font-medium text-[var(--muted-text)] group-hover:text-gold-500 transition">{question}</h3>
+                                    <span className="text-[var(--muted-text)] group-hover:text-gold-500">+</span>
                                 </div>
                             </div>
                         ))}

@@ -13,6 +13,7 @@ RETURNS TABLE (
     msg_content         TEXT,
     msg_is_read         BOOLEAN,
     msg_type           TEXT,
+    msg_booking_id     UUID,
     msg_created_at      TIMESTAMPTZ
 )
 LANGUAGE plpgsql
@@ -46,7 +47,7 @@ BEGIN
         RETURN QUERY
         SELECT 
             m.id, m.conversation_id, m.sender_id, m.content, 
-            m.is_read, m.message_type, m.created_at
+            m.is_read, m.message_type, m.booking_id, m.created_at
         FROM messages m
         WHERE m.conversation_id = p_conversation_id
         ORDER BY m.created_at ASC;
@@ -54,7 +55,7 @@ BEGIN
         RETURN QUERY
         SELECT 
             m.id, m.conversation_id, m.sender_id, m.content, 
-            m.is_read, 'message'::TEXT, m.created_at
+            m.is_read, 'message'::TEXT, NULL::UUID, m.created_at
         FROM messages m
         WHERE m.conversation_id = p_conversation_id
         ORDER BY m.created_at ASC;

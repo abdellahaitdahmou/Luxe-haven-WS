@@ -2,11 +2,11 @@ import { Download, ArrowRight } from "lucide-react";
 
 export default function PressPage() {
     return (
-        <div className="min-h-screen bg-black pt-32 pb-20 px-6">
+        <div className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] pt-32 pb-20 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">Press & Media</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-[var(--muted-text)] max-w-2xl mx-auto leading-relaxed">
                         Latest news, exclusive releases, and media resources for Luxe Haven.
                     </p>
                 </div>
@@ -15,7 +15,7 @@ export default function PressPage() {
                     <section className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col md:flex-row justify-between items-center gap-6">
                         <div>
                             <h2 className="text-2xl font-bold text-white mb-2">Media Kit & Branding</h2>
-                            <p className="text-gray-400">Download high-resolution logos, executive bios, and premium brand assets.</p>
+                            <p className="text-[var(--muted-text)]">Download high-resolution logos, executive bios, and premium brand assets.</p>
                         </div>
                         <button className="flex items-center gap-2 bg-gold-500 text-black px-6 py-3 rounded-xl font-bold hover:bg-gold-400 transition-colors whitespace-nowrap">
                             <Download className="w-5 h-5" /> Download Media Kit
@@ -33,7 +33,7 @@ export default function PressPage() {
                                 <div key={i} className="group border-b border-white/10 pb-6 cursor-pointer">
                                     <span className="text-gold-500 text-sm font-bold tracking-wider uppercase mb-2 block">{news.date}</span>
                                     <h4 className="text-xl font-bold text-white group-hover:text-gold-400 transition-colors mb-2">{news.title}</h4>
-                                    <p className="text-gray-400 mb-4">{news.desc}</p>
+                                    <p className="text-[var(--muted-text)] mb-4">{news.desc}</p>
                                     <span className="text-sm text-gold-500 flex items-center gap-1 font-medium group-hover:gap-2 transition-all">
                                         Read Full Release <ArrowRight className="w-4 h-4" />
                                     </span>

@@ -79,7 +79,7 @@ export function AvatarUpload({ uid, url, currentName }: AvatarUploadProps) {
                             sizes="128px"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-gray-500 bg-surface-100">
+                        <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-[var(--muted-text)] bg-[var(--surface-100)]">
                             {currentName?.charAt(0) || "U"}
                         </div>
                     )}
@@ -92,7 +92,7 @@ export function AvatarUpload({ uid, url, currentName }: AvatarUploadProps) {
 
                     {/* Hover Overlay - Zoom Hint if image exists, else Upload */}
                     <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        {avatarUrl ? <ZoomIn className="w-8 h-8 text-white" /> : <Upload className="w-8 h-8 text-white" />}
+                        {avatarUrl ? <ZoomIn className="w-8 h-8 text-[var(--page-text)]" /> : <Upload className="w-8 h-8 text-[var(--page-text)]" />}
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@ export function AvatarUpload({ uid, url, currentName }: AvatarUploadProps) {
                     disabled={uploading}
                     onClick={() => fileInputRef.current?.click()}
                 >
-                    {avatarUrl ? <Pencil className="w-4 h-4 text-white" /> : <Camera className="w-4 h-4 text-white" />}
+                    {avatarUrl ? <Pencil className="w-4 h-4 text-[var(--page-text)]" /> : <Camera className="w-4 h-4 text-[var(--page-text)]" />}
                 </button>
 
                 <input
@@ -127,7 +127,7 @@ export function AvatarUpload({ uid, url, currentName }: AvatarUploadProps) {
                                 src={avatarUrl}
                                 alt="Avatar Zoomed"
                                 fill
-                                className="object-contain rounded-lg shadow-2xl border border-white/10"
+                                className="object-contain rounded-lg shadow-2xl border border-[var(--card-border)]"
                                 sizes="100vw"
                                 quality={100}
                             />

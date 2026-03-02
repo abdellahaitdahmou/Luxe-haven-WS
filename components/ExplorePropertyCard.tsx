@@ -25,7 +25,7 @@ export function ExplorePropertyCard({ property, checkin, checkout }: { property:
     return (
         <Link
             href={href}
-            className="group block bg-surface-50 border border-white/5 rounded-2xl overflow-hidden hover:border-gold-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.1)]"
+            className="group block bg-[var(--card-bg)] border border-white/5 rounded-2xl overflow-hidden hover:border-gold-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.1)]"
         >
             {/* Image */}
             <div className="relative h-56 overflow-hidden bg-gray-900">
@@ -44,15 +44,27 @@ export function ExplorePropertyCard({ property, checkin, checkout }: { property:
 
                 {/* Property type badge */}
                 {property.property_type && (
-                    <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full border border-white/10">
-                        <span>{PROPERTY_TYPE_EMOJIS[property.property_type] || "✨"}</span>
-                        <span className="capitalize">{property.property_type}</span>
+                    <div className="absolute top-3 left-3 flex flex-col gap-2">
+                        <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm text-on-dark text-xs font-semibold px-2.5 py-1 rounded-full border border-[var(--card-border)] w-fit">
+                            <span>{PROPERTY_TYPE_EMOJIS[property.property_type] || "✨"}</span>
+                            <span className="capitalize">{property.property_type}</span>
+                        </div>
+                        {property.listing_type === 'sale' && (
+                            <div className="flex items-center gap-1.5 bg-gold-500/90 backdrop-blur-sm text-black text-xs font-bold px-2.5 py-1 rounded-full border border-gold-400 w-fit">
+                                <span>For Sale</span>
+                            </div>
+                        )}
+                        {property.price_type === 'per_month' && (
+                            <div className="flex items-center gap-1.5 bg-blue-500/90 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-full border border-blue-400 w-fit">
+                                <span>Long Term</span>
+                            </div>
+                        )}
                     </div>
                 )}
 
                 {/* Rating badge */}
                 {rating && (
-                    <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-full border border-white/10">
+                    <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm text-on-dark text-xs font-semibold px-2.5 py-1 rounded-full border border-[var(--card-border)]">
                         <Star className="w-3 h-3 fill-gold-500 text-gold-500" />
                         {rating}
                     </div>
@@ -62,7 +74,7 @@ export function ExplorePropertyCard({ property, checkin, checkout }: { property:
                 {property.amenities && Array.isArray(property.amenities) && property.amenities.length > 0 && (
                     <div className="absolute bottom-3 left-3 flex gap-1.5">
                         {(property.amenities as string[]).slice(0, 2).map((tag: string) => (
-                            <span key={tag} className="text-xs bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded-full border border-white/10">
+                            <span key={tag} className="text-xs bg-black/60 backdrop-blur-sm text-on-dark px-2 py-0.5 rounded-full border border-[var(--card-border)]">
                                 {tag}
                             </span>
                         ))}
@@ -78,11 +90,11 @@ export function ExplorePropertyCard({ property, checkin, checkout }: { property:
                         <span className="text-xs text-gold-500 font-semibold shrink-0 ml-2 mt-0.5">New</span>
                     )}
                 </div>
-                <p className="text-gray-400 text-sm flex items-center gap-1 mb-3">
+                <p className="text-[var(--muted-text)] text-sm flex items-center gap-1 mb-3">
                     <MapPin className="w-3.5 h-3.5 text-gold-500 shrink-0" />
                     <span className="line-clamp-1">{location}</span>
                 </p>
-                <div className="flex items-center gap-4 text-gray-500 text-sm mb-4">
+                <div className="flex items-center gap-4 text-[var(--muted-text)] text-sm mb-4">
                     {property.bedrooms && (
                         <span className="flex items-center gap-1">
                             <Bed className="w-3.5 h-3.5" /> {property.bedrooms} bed{property.bedrooms > 1 ? "s" : ""}
@@ -99,13 +111,15 @@ export function ExplorePropertyCard({ property, checkin, checkout }: { property:
                         </span>
                     )}
                 </div>
-                <div className="border-t border-white/5 pt-3 flex items-center justify-between">
+                <div className="border-t border-[var(--card-border)] pt-3 flex items-center justify-between">
                     <div>
-                        <span className="text-white font-bold text-lg">{format(property.price_per_night)}</span>
-                        <span className="text-gray-500 text-sm"> / night</span>
+                        <span className="text-[var(--page-text)] font-bold text-lg">{format(property.price_per_night)}</span>
+                        {(!property.price_type || property.price_type === 'per_night') && <span className="text-[var(--muted-text)] text-sm"> / night</span>}
+                        {property.price_type === 'per_month' && <span className="text-[var(--muted-text)] text-sm"> / month</span>}
+                        {property.price_type === 'fixed' && <span className="text-[var(--muted-text)] text-sm"> total</span>}
                     </div>
                     {reviewCount > 0 && (
-                        <span className="text-xs text-gray-500">{reviewCount} review{reviewCount > 1 ? "s" : ""}</span>
+                        <span className="text-xs text-[var(--muted-text)]">{reviewCount} review{reviewCount > 1 ? "s" : ""}</span>
                     )}
                 </div>
             </div>

@@ -46,7 +46,7 @@ export function HeroSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
                 >
-                    <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 tracking-tight leading-tight">
+                    <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 tracking-tight leading-tight text-on-dark">
                         Discover Your <span className="text-gold-500 block md:inline relative">
                             Dream Home
                             <motion.span
@@ -60,7 +60,7 @@ export function HeroSection() {
                 </motion.div>
 
                 <motion.p
-                    className="text-lg md:text-xl text-gray-300 mb-8 md:mb-10 max-w-2xl mx-auto font-light"
+                    className="text-lg md:text-xl text-on-dark/70 mb-8 md:mb-10 max-w-2xl mx-auto font-light"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1.0, ease: "easeOut" }}

@@ -2,11 +2,11 @@ import { ChevronRight } from "lucide-react";
 
 export default function CareersPage() {
     return (
-        <div className="min-h-screen bg-black pt-32 pb-20 px-6">
+        <div className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] pt-32 pb-20 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">Join the Elite</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-[var(--muted-text)] max-w-2xl mx-auto leading-relaxed">
                         Join our team of luxury hospitality experts and help define the future of high-end travel and real estate.
                     </p>
                 </div>
@@ -14,7 +14,7 @@ export default function CareersPage() {
                 <div className="space-y-16">
                     <section className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 text-center">
                         <h2 className="text-3xl font-bold text-white mb-4">Why Luxe Haven?</h2>
-                        <p className="text-gray-400 leading-relaxed text-lg max-w-3xl mx-auto">
+                        <p className="text-[var(--muted-text)] leading-relaxed text-lg max-w-3xl mx-auto">
                             We are building a culture of uncompromising excellence. At Luxe Haven, you will work alongside industry leaders, travel to extraordinary destinations, and shape digital luxury. We offer competitive compensation, global remote flexibility, and comprehensive wellness benefits.
                         </p>
                     </section>
@@ -31,7 +31,7 @@ export default function CareersPage() {
                                 <div key={index} className="group bg-white/5 border border-white/10 hover:border-gold-500/50 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer transition-all">
                                     <div>
                                         <h4 className="text-xl font-bold text-white group-hover:text-gold-500 transition-colors mb-2">{job.title}</h4>
-                                        <div className="flex flex-wrap gap-3 text-sm text-gray-500">
+                                        <div className="flex flex-wrap gap-3 text-sm text-[var(--muted-text)]">
                                             <span>{job.department}</span>
                                             <span>&bull;</span>
                                             <span>{job.location}</span>

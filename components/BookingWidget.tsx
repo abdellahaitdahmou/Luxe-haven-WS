@@ -10,6 +10,7 @@ import { toast } from "sonner"
 import { useVerification } from "@/components/providers/VerificationProvider";
 import { useCurrency } from "@/context/CurrencyContext";
 import { startConversation } from "@/app/actions/messages";
+import { createBookingRequest } from "@/app/actions/bookings";
 
 interface BookingWidgetProps {
     price: number
@@ -18,9 +19,11 @@ interface BookingWidgetProps {
     propertyId: string
     ownerId?: string
     isLoggedIn?: boolean
+    listingType?: string
+    priceType?: string
 }
 
-export function BookingWidget({ price, seasonalPrices, blockedDates, propertyId, ownerId, isLoggedIn }: BookingWidgetProps) {
+export function BookingWidget({ price, seasonalPrices, blockedDates, propertyId, ownerId, isLoggedIn, listingType = 'rent', priceType = 'per_night' }: BookingWidgetProps) {
     const [dateRange, setDateRange] = useState<DateRange | undefined>()
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -76,35 +79,31 @@ export function BookingWidget({ price, seasonalPrices, blockedDates, propertyId,
             return
         }
 
-        if (!isVerified) {
-            toast.error("Please verify your ID to continue booking.");
-            openVerification();
-            return;
-        }
+        // ── ID VERIFICATION DISABLED FOR TESTING ─────────────────────────
+        // Uncomment the block below to re-enable ID verification gate:
+        // if (!isVerified) {
+        //     toast.error("Please verify your ID to continue booking.");
+        //     openVerification();
+        //     return;
+        // }
+        // ─────────────────────────────────────────────────────────────────
 
         setLoading(true)
 
         try {
-            const res = await fetch('/api/bookings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    propertyId,
-                    checkIn: dateRange.from,
-                    checkOut: dateRange.to,
-                    guests: 1 // Default for now, add guest picker later
-                })
-            })
+            const result = await createBookingRequest({
+                propertyId,
+                checkIn: dateRange.from,
+                checkOut: dateRange.to,
+                guests: 1
+            });
 
-            const data = await res.json()
-
-            if (!res.ok) {
-                throw new Error(data.error || 'Failed to create booking')
+            if (result.bookingId) {
+                toast.success("Request sent! The host will review your stay.");
+                router.push("/dashboard/messages");
             }
-
-            router.push(`/checkout?booking_id=${data.bookingId}`)
         } catch (error: any) {
-            toast.error(error.message)
+            toast.error(error.message || "Failed to create booking request");
         } finally {
             setLoading(false)
         }
@@ -113,20 +112,27 @@ export function BookingWidget({ price, seasonalPrices, blockedDates, propertyId,
     return (
         <div className="relative">
             <div className="sticky top-28 space-y-6">
-                <div className="bg-white rounded-2xl shadow-xl border p-4 sm:p-6 text-black">
+                <div className="bg-[var(--card-bg)] rounded-2xl shadow-xl border border-[var(--card-border)] p-4 sm:p-6 text-[var(--page-text)]">
 
 
-                    {/* Calendar Component */}
-                    <div className="mb-4">
-                        <PropertyCalendar
-                            blockedDates={blockedDates}
-                            seasonalPrices={seasonalPrices}
-                            onRangeSelect={setDateRange}
-                            className="w-full border-0 shadow-none p-0 bg-transparent"
-                        />
-                    </div>
+                    {/* Calendar Component OR Fixed Price */}
+                    {listingType === 'sale' ? (
+                        <div className="text-center mb-6">
+                            <div className="text-sm text-[var(--muted-text)] font-semibold uppercase tracking-wider mb-2">Asking Price</div>
+                            <div className="text-3xl font-bold text-gold-500">{format(price)}</div>
+                        </div>
+                    ) : (
+                        <div className="mb-4">
+                            <PropertyCalendar
+                                blockedDates={blockedDates}
+                                seasonalPrices={seasonalPrices}
+                                onRangeSelect={setDateRange}
+                                className="w-full border-0 shadow-none p-0 bg-transparent"
+                            />
+                        </div>
+                    )}
 
-                    {nights > 0 && (
+                    {listingType !== 'sale' && nights > 0 && (
                         <div className="space-y-2 mb-4">
                             <div className="flex justify-between text-sm">
                                 <span>{format(price)} x {nights} nights</span>
@@ -139,39 +145,43 @@ export function BookingWidget({ price, seasonalPrices, blockedDates, propertyId,
                         </div>
                     )}
 
-                    <button
-                        onClick={handleReserve}
-                        disabled={loading || !dateRange?.from || !dateRange?.to}
-                        className="w-full bg-black text-white py-3 rounded-xl font-semibold text-lg hover:bg-gray-800 transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
-                    >
-                        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Reserve"}
-                    </button>
+                    {listingType !== 'sale' && (
+                        <>
+                            <button
+                                onClick={handleReserve}
+                                disabled={loading || !dateRange?.from || !dateRange?.to}
+                                className="w-full bg-[var(--page-text)] text-[var(--card-bg)] py-3 rounded-xl font-semibold text-lg hover:opacity-90 transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+                            >
+                                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Request to Book"}
+                            </button>
 
-                    <div className="text-center text-xs text-gray-400 mt-4">
-                        You won&apos;t be charged yet
-                    </div>
+                            <div className="text-center text-xs text-[var(--muted-text)] mt-4">
+                                You won&apos;t be charged yet
+                            </div>
+                        </>
+                    )}
 
                     {/* Divider */}
                     {ownerId && (
                         <>
                             <div className="relative my-4">
                                 <div className="absolute inset-0 flex items-center">
-                                    <span className="w-full border-t border-gray-200" />
+                                    <span className="w-full border-t border-[var(--card-border)]" />
                                 </div>
                                 <div className="relative flex justify-center text-xs">
-                                    <span className="bg-white px-2 text-gray-400">or</span>
+                                    <span className="bg-[var(--card-bg)] px-2 text-[var(--muted-text)]">or</span>
                                 </div>
                             </div>
 
                             <button
                                 onClick={handleContactHost}
                                 disabled={contactLoading}
-                                className="w-full flex items-center justify-center gap-2 border-2 border-black text-black py-3 rounded-xl font-semibold text-base hover:bg-black hover:text-white transition transform active:scale-95 disabled:opacity-50"
+                                className={`w-full flex items-center justify-center gap-2 border-2 border-[var(--page-text)] text-[var(--page-text)] py-3 rounded-xl font-semibold text-base hover:bg-[var(--page-text)] hover:text-[var(--card-bg)] transition transform active:scale-95 disabled:opacity-50 ${listingType === 'sale' ? 'bg-gold-500 text-black border-gold-500 hover:bg-gold-600 hover:border-gold-600 hover:text-black mt-4' : ''}`}
                             >
                                 {contactLoading
                                     ? <Loader2 className="w-5 h-5 animate-spin" />
                                     : <MessageCircle className="w-5 h-5" />}
-                                {contactLoading ? "Opening chat..." : "Message Host"}
+                                {contactLoading ? "Opening chat..." : listingType === 'sale' ? "Inquire to Buy" : "Message Host"}
                             </button>
                         </>
                     )}

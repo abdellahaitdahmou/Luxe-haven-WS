@@ -50,7 +50,7 @@ export default function WishlistPage() {
 
     if (loading) {
         return (
-            <div className="flex bg-black min-h-screen items-center justify-center">
+            <div className="flex bg-[var(--page-bg)] min-h-screen items-center justify-center">
                 <Loader2 className="w-8 h-8 animate-spin text-gold-500" />
             </div>
         );
@@ -61,17 +61,17 @@ export default function WishlistPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold text-white mb-2">Your Wishlist</h1>
-                    <p className="text-gray-400">Places you&apos;ve saved for later.</p>
+                    <p className="text-[var(--muted-text)]">Places you&apos;ve saved for later.</p>
                 </div>
             </div>
 
             {properties.length === 0 ? (
-                <div className="bg-surface-50 border border-white/10 rounded-2xl p-12 text-center">
+                <div className="bg-[var(--card-bg)] border border-white/10 rounded-2xl p-12 text-center">
                     <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Heart className="w-8 h-8 text-gray-500" />
+                        <Heart className="w-8 h-8 text-[var(--muted-text)]" />
                     </div>
                     <h2 className="text-xl font-bold text-white mb-2">No saved properties yet</h2>
-                    <p className="text-gray-400 max-w-md mx-auto mb-8">
+                    <p className="text-[var(--muted-text)] max-w-md mx-auto mb-8">
                         Seems like you haven&apos;t found your dream stay yet. Browse our exclusive collection and save your favorites.
                     </p>
                     <Link href="/properties">
@@ -84,7 +84,7 @@ export default function WishlistPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {properties.map((property) => (
                         <Link href={`/properties/${property.id}`} key={property.id} className="group">
-                            <div className="bg-surface-50 border border-white/10 rounded-2xl overflow-hidden hover:border-gold-500/50 transition-all duration-300 h-full flex flex-col">
+                            <div className="bg-[var(--card-bg)] border border-white/10 rounded-2xl overflow-hidden hover:border-gold-500/50 transition-all duration-300 h-full flex flex-col">
                                 <div className="relative h-64 overflow-hidden">
                                     <img
                                         src={property.image_urls?.[0] || "/placeholder-property.jpg"}
@@ -96,7 +96,7 @@ export default function WishlistPage() {
                                     </div>
                                     <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
                                         <Star className="w-3 h-3 text-gold-500 fill-gold-500" />
-                                        <span className="text-xs font-bold text-white">{property.rating || "New"}</span>
+                                        <span className="text-xs font-bold text-[var(--page-text)]">{property.rating || "New"}</span>
                                     </div>
                                 </div>
                                 <div className="p-6 flex-1 flex flex-col">
@@ -105,12 +105,12 @@ export default function WishlistPage() {
                                             {property.title}
                                         </h3>
                                     </div>
-                                    <div className="flex items-center text-gray-400 text-sm mb-4">
+                                    <div className="flex items-center text-[var(--muted-text)] text-sm mb-4">
                                         <MapPin className="w-4 h-4 mr-1 text-gold-500" />
                                         <span className="truncate">{property.location || "Unknown Location"}</span>
                                     </div>
 
-                                    <div className="flex items-center gap-4 text-xs text-gray-500 mb-6 border-b border-white/5 pb-4">
+                                    <div className="flex items-center gap-4 text-xs text-[var(--muted-text)] mb-6 border-b border-white/5 pb-4">
                                         <div className="flex items-center gap-1">
                                             <Users className="w-4 h-4" />
                                             <span>{property.max_guests} guests</span>
@@ -128,7 +128,7 @@ export default function WishlistPage() {
                                     <div className="mt-auto flex items-center justify-between">
                                         <div>
                                             <span className="text-2xl font-bold text-gold-500">${property.price_per_night}</span>
-                                            <span className="text-gray-400 text-sm"> / night</span>
+                                            <span className="text-[var(--muted-text)] text-sm"> / night</span>
                                         </div>
                                         <Button variant="ghost" className="text-white hover:text-gold-500 hover:bg-white/5 p-0 h-auto font-semibold">
                                             View Details

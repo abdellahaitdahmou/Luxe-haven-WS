@@ -29,33 +29,33 @@ export function TravelerSidebar({ mobile }: { mobile?: boolean }) {
             </div>
             <nav className="space-y-2 flex-col flex h-full">
                 <div className="space-y-2">
-                    <Link href="/dashboard" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Home className="w-5 h-5" />
                         <span>Overview</span>
                     </Link>
-                    <Link href="/dashboard/trips" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/trips" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Map className="w-5 h-5" />
                         <span>My Trips</span>
                     </Link>
-                    <Link href="/dashboard/messages" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/messages" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <MessageCircle className="w-5 h-5" />
                         <span>Messages</span>
                         <UnreadMessageBadge />
                     </Link>
-                    <Link href="/dashboard/wishlist" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/wishlist" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Heart className="w-5 h-5" />
                         <span>Wishlist</span>
                     </Link>
-                    <Link href="/dashboard/settings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 hover:text-white transition-colors">
+                    <Link href="/dashboard/settings" className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-white/5 text-[var(--muted-text)] hover:text-white transition-colors">
                         <Settings className="w-5 h-5" />
                         <span>Settings</span>
                     </Link>
                 </div>
 
-                <div className="mt-auto pt-4 border-t border-white/10">
+                <div className="mt-auto pt-4 border-t border-[var(--card-border)]">
                     <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-500 transition-colors text-left"
+                        className="w-full flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-red-500/10 text-[var(--muted-text)] hover:text-red-500 transition-colors text-left"
                     >
                         <LogOut className="w-5 h-5" />
                         <span>Sign Out</span>

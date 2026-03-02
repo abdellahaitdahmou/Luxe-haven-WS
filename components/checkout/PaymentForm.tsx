@@ -8,8 +8,9 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Initialize Stripe outside component to avoid recreation
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+// Initialize Stripe only when the key is available
+const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
 
 function CheckoutForm({ clientSecret, bookingId, totalAmount }: { clientSecret: string, bookingId: string, totalAmount: number }) {
     const stripe = useStripe();
@@ -102,8 +103,16 @@ export default function PaymentWrapper({ bookingId, propertyId, checkIn, checkOu
         return <div className="text-red-500">Failed to initialize payment. Please try again.</div>;
     }
 
+    if (!stripePromise) {
+        return (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-6 rounded-lg text-sm">
+                <strong>Stripe not configured.</strong> Add <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> to your <code>.env.local</code> and Vercel environment variables.
+            </div>
+        );
+    }
+
     return (
-        <div className="bg-surface-100 p-6 rounded-lg border border-white/10">
+        <div className="bg-surface-100 p-6 rounded-lg border border-[var(--card-border)]">
             <h3 className="text-xl font-bold text-white mb-4">Secure Payment</h3>
             <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night', variables: { colorPrimary: '#EAB308' } } }}>
                 <CheckoutForm clientSecret={clientSecret} bookingId={bookingId} totalAmount={totalAmount} />

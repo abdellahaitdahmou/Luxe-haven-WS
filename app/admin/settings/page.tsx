@@ -104,18 +104,18 @@ export default function AdminSettingsPage() {
         <div className="space-y-8 max-w-5xl mx-auto p-8">
             <div>
                 <h1 className="text-3xl font-bold text-white mb-2">Platform Settings</h1>
-                <p className="text-gray-400">Configure global platform policies and financial settings.</p>
+                <p className="text-[var(--muted-text)]">Configure global platform policies and financial settings.</p>
             </div>
 
             <Tabs defaultValue="policies" className="w-full">
-                <TabsList className="bg-surface-50 border border-white/10">
+                <TabsList className="bg-[var(--card-bg)] border border-white/10">
                     <TabsTrigger value="policies">Policies</TabsTrigger>
                     <TabsTrigger value="payments">Payments & Payouts</TabsTrigger>
                 </TabsList>
 
                 {/* POLICIES TAB */}
                 <TabsContent value="policies" className="mt-6">
-                    <Card className="bg-surface-50 border-white/10 text-white">
+                    <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                         <CardHeader>
                             <CardTitle>Global Policies</CardTitle>
                             <CardDescription>Set default policies for new listings.</CardDescription>
@@ -124,7 +124,7 @@ export default function AdminSettingsPage() {
                             <div className="space-y-2">
                                 <Label>Default Cancellation Policy</Label>
                                 <Select value={cancellationPolicy} onValueChange={setCancellationPolicy}>
-                                    <SelectTrigger className="bg-surface-100 border-white/10">
+                                    <SelectTrigger className="bg-[var(--surface-100)] border-white/10">
                                         <SelectValue placeholder="Select policy" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -138,7 +138,7 @@ export default function AdminSettingsPage() {
                             {/* ─── Currency ─── */}
                             <div className="space-y-3 border-t border-white/10 pt-6">
                                 <Label className="text-base font-semibold">Platform Currency</Label>
-                                <p className="text-sm text-gray-400">All prices displayed to guests will use this currency.</p>
+                                <p className="text-sm text-[var(--muted-text)]">All prices displayed to guests will use this currency.</p>
                                 <div className="grid grid-cols-3 gap-3">
                                     {CURRENCIES.map(cur => (
                                         <button
@@ -147,12 +147,12 @@ export default function AdminSettingsPage() {
                                             onClick={() => setPlatformCurrency(cur.code as CurrencyCode)}
                                             className={`flex flex-col items-center gap-2 py-4 rounded-2xl border transition ${platformCurrency === cur.code
                                                     ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                                                    : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'
+                                                    : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'
                                                 }`}
                                         >
                                             <span className="text-2xl font-bold">{cur.symbol}</span>
                                             <span className="text-sm font-semibold">{cur.code}</span>
-                                            <span className="text-xs text-gray-500">{cur.name}</span>
+                                            <span className="text-xs text-[var(--muted-text)]">{cur.name}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -182,7 +182,7 @@ export default function AdminSettingsPage() {
 
                 {/* PAYMENTS TAB */}
                 <TabsContent value="payments" className="mt-6">
-                    <Card className="bg-surface-50 border-white/10 text-white mb-6">
+                    <Card className="bg-[var(--card-bg)] border-white/10 text-white mb-6">
                         <CardHeader>
                             <CardTitle>Accepted Payment Methods</CardTitle>
                             <CardDescription>Select which payment methods guests can use.</CardDescription>
@@ -200,14 +200,14 @@ export default function AdminSettingsPage() {
                                     <Label htmlFor="stripe" className="text-lg font-medium cursor-pointer">Stripe</Label>
                                 </div>
                                 {paymentMethods.includes("stripe") && (
-                                    <div className="ml-6 grid gap-4 p-4 bg-surface-100 rounded-lg border border-white/5">
+                                    <div className="ml-6 grid gap-4 p-4 bg-[var(--surface-100)] rounded-lg border border-[var(--card-border)]">
                                         <div className="grid gap-2">
                                             <Label>Publishable Key</Label>
                                             <Input
                                                 value={stripeConfig.publicKey}
                                                 onChange={(e) => setStripeConfig({ ...stripeConfig, publicKey: e.target.value })}
                                                 placeholder="pk_test_..."
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -217,7 +217,7 @@ export default function AdminSettingsPage() {
                                                 value={stripeConfig.secretKey}
                                                 onChange={(e) => setStripeConfig({ ...stripeConfig, secretKey: e.target.value })}
                                                 placeholder="sk_test_..."
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <Button size="sm" onClick={() => saveSetting("stripe_config", stripeConfig)} disabled={saving} className="w-fit bg-gold-500/20 text-gold-500 hover:bg-gold-500/30">Save Stripe Config</Button>
@@ -237,13 +237,13 @@ export default function AdminSettingsPage() {
                                     <Label htmlFor="paypal" className="text-lg font-medium cursor-pointer">PayPal</Label>
                                 </div>
                                 {paymentMethods.includes("paypal") && (
-                                    <div className="ml-6 grid gap-4 p-4 bg-surface-100 rounded-lg border border-white/5">
+                                    <div className="ml-6 grid gap-4 p-4 bg-[var(--surface-100)] rounded-lg border border-[var(--card-border)]">
                                         <div className="grid gap-2">
                                             <Label>Client ID</Label>
                                             <Input
                                                 value={paypalConfig.clientId}
                                                 onChange={(e) => setPaypalConfig({ ...paypalConfig, clientId: e.target.value })}
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -252,7 +252,7 @@ export default function AdminSettingsPage() {
                                                 type="password"
                                                 value={paypalConfig.secret}
                                                 onChange={(e) => setPaypalConfig({ ...paypalConfig, secret: e.target.value })}
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <Button size="sm" onClick={() => saveSetting("paypal_config", paypalConfig)} disabled={saving} className="w-fit bg-gold-500/20 text-gold-500 hover:bg-gold-500/30">Save PayPal Config</Button>
@@ -273,13 +273,13 @@ export default function AdminSettingsPage() {
                                     <Label htmlFor="credit_card" className="text-lg font-medium cursor-pointer">Credit Card (Direct Gateway)</Label>
                                 </div>
                                 {paymentMethods.includes("credit_card") && (
-                                    <div className="ml-6 grid gap-4 p-4 bg-surface-100 rounded-lg border border-white/5">
+                                    <div className="ml-6 grid gap-4 p-4 bg-[var(--surface-100)] rounded-lg border border-[var(--card-border)]">
                                         <div className="grid gap-2">
                                             <Label>Merchant ID</Label>
                                             <Input
                                                 value={ccConfig.merchantId}
                                                 onChange={(e) => setCcConfig({ ...ccConfig, merchantId: e.target.value })}
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <div className="grid gap-2">
@@ -288,7 +288,7 @@ export default function AdminSettingsPage() {
                                                 type="password"
                                                 value={ccConfig.merchantKey}
                                                 onChange={(e) => setCcConfig({ ...ccConfig, merchantKey: e.target.value })}
-                                                className="bg-surface-50 border-white/10"
+                                                className="bg-[var(--card-bg)] border-white/10"
                                             />
                                         </div>
                                         <Button size="sm" onClick={() => saveSetting("cc_config", ccConfig)} disabled={saving} className="w-fit bg-gold-500/20 text-gold-500 hover:bg-gold-500/30">Save Card Config</Button>
@@ -309,7 +309,7 @@ export default function AdminSettingsPage() {
                         </CardFooter>
                     </Card>
 
-                    <Card className="bg-surface-50 border-white/10 text-white">
+                    <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                         <CardHeader>
                             <CardTitle>Payout Methods</CardTitle>
                             <CardDescription>Configure how owners receive their earnings.</CardDescription>
@@ -317,7 +317,7 @@ export default function AdminSettingsPage() {
                         <CardContent className="space-y-2">
                             <Label>Primary Payout System</Label>
                             <Select value={payoutMethods} onValueChange={setPayoutMethods}>
-                                <SelectTrigger className="bg-surface-100 border-white/10">
+                                <SelectTrigger className="bg-[var(--surface-100)] border-white/10">
                                     <SelectValue placeholder="Select system" />
                                 </SelectTrigger>
                                 <SelectContent>

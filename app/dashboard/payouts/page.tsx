@@ -49,8 +49,8 @@ export default function PayoutMethodsPage() {
         <div className="space-y-6 max-w-4xl mx-auto">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Payout Methods</h1>
-                    <p className="text-gray-400">Manage how you receive your earnings.</p>
+                    <h1 className="text-3xl font-bold text-[var(--page-text)]">Payout Methods</h1>
+                    <p className="text-[var(--muted-text)]">Manage how you receive your earnings.</p>
                 </div>
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                     <DialogTrigger asChild>
@@ -58,7 +58,7 @@ export default function PayoutMethodsPage() {
                             <Plus className="w-4 h-4 mr-2" /> Add Method
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-surface-100 border-white/10 text-white sm:max-w-md">
+                    <DialogContent className="bg-[var(--surface-100)] border-white/10 text-white sm:max-w-md">
                         <DialogHeader>
                             <DialogTitle>Add Payout Method</DialogTitle>
                             <DialogDescription>
@@ -70,7 +70,7 @@ export default function PayoutMethodsPage() {
                             <div className="space-y-2">
                                 <Label>Method Type</Label>
                                 <Select value={methodType} onValueChange={setMethodType}>
-                                    <SelectTrigger className="bg-surface-50 border-white/10">
+                                    <SelectTrigger className="bg-[var(--card-bg)] border-[var(--card-border)]">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -86,7 +86,7 @@ export default function PayoutMethodsPage() {
                                     <Label>PayPal Email</Label>
                                     <Input
                                         placeholder="user@example.com"
-                                        className="bg-surface-50 border-white/10"
+                                        className="bg-[var(--card-bg)] border-[var(--card-border)]"
                                         onChange={(e) => setDetails({ ...details, email: e.target.value })}
                                     />
                                 </div>
@@ -97,14 +97,14 @@ export default function PayoutMethodsPage() {
                                     <div className="space-y-2">
                                         <Label>Bank Name</Label>
                                         <Input
-                                            className="bg-surface-50 border-white/10"
+                                            className="bg-[var(--card-bg)] border-[var(--card-border)]"
                                             onChange={(e) => setDetails({ ...details, bank_name: e.target.value })}
                                         />
                                     </div>
                                     <div className="space-y-2">
                                         <Label>Account Number / IBAN</Label>
                                         <Input
-                                            className="bg-surface-50 border-white/10"
+                                            className="bg-[var(--card-bg)] border-[var(--card-border)]"
                                             onChange={(e) => setDetails({ ...details, account_number: e.target.value })}
                                         />
                                     </div>
@@ -115,7 +115,7 @@ export default function PayoutMethodsPage() {
                                     <Label>Payoneer Email</Label>
                                     <Input
                                         placeholder="user@example.com"
-                                        className="bg-surface-50 border-white/10"
+                                        className="bg-[var(--card-bg)] border-[var(--card-border)]"
                                         onChange={(e) => setDetails({ ...details, email: e.target.value })}
                                     />
                                 </div>
@@ -130,12 +130,12 @@ export default function PayoutMethodsPage() {
             </div>
 
             {/* List of Methods Placeholder */}
-            <Card className="bg-surface-50 border-white/10 text-white">
+            <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                 <CardHeader>
                     <CardTitle>Your Linked Accounts</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-gray-400">No payout methods added yet.</p>
+                    <p className="text-[var(--muted-text)]">No payout methods added yet.</p>
                 </CardContent>
             </Card>
         </div>

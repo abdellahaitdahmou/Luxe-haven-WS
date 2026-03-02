@@ -32,16 +32,16 @@ export default async function AdminLayout({
     };
 
     return (
-        <div className="min-h-screen bg-black text-white font-sans selection:bg-gold-500 selection:text-black flex flex-col md:flex-row">
+        <div className="h-screen overflow-hidden bg-[var(--page-bg)] text-[var(--page-text)] font-sans selection:bg-gold-500 selection:text-black flex flex-col md:flex-row">
             {/* Mobile Nav */}
             <AdminMobileNav />
 
             {/* Desktop Sidebar */}
             <AdminSidebar />
 
-            <main className="flex-1 md:ml-64 p-4 md:p-8 overflow-x-hidden flex flex-col">
+            <main className="flex-1 md:ml-64 flex flex-col min-h-0 overflow-hidden">
                 <AdminHeader userProfile={userProfile} />
-                <div className="flex-1">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8">
                     {children}
                 </div>
             </main>

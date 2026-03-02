@@ -42,7 +42,7 @@ export function TagInput({ placeholder, tags, setTags }: TagInputProps) {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="bg-surface-50 border-white/10 text-white"
+                    className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                 />
                 <Button type="button" onClick={addTag} variant="secondary">Add</Button>
             </div>

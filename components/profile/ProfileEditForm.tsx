@@ -44,41 +44,41 @@ export function ProfileEditForm({ user, profile }: ProfileEditFormProps) {
     return (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
             <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-white">Full Name</Label>
+                <Label htmlFor="fullName" className="text-[var(--page-text)]">Full Name</Label>
                 <Input
                     id="fullName"
                     name="fullName"
                     defaultValue={profile?.full_name || user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || ""}
-                    className="bg-surface-50 border-white/10 text-white"
+                    className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                     required
                 />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="location" className="text-white">Location <span className="text-gray-500 text-xs ml-1">(Optional)</span></Label>
+                <Label htmlFor="location" className="text-[var(--page-text)]">Location <span className="text-[var(--muted-text)] text-xs ml-1">(Optional)</span></Label>
                 <Input
                     id="location"
                     name="location"
                     defaultValue={profile?.location || ""}
                     placeholder="e.g. Paris, France"
-                    className="bg-surface-50 border-white/10 text-white"
+                    className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]"
                 />
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="bio" className="text-white">Bio <span className="text-gray-500 text-xs ml-1">(Optional)</span></Label>
+                <Label htmlFor="bio" className="text-[var(--page-text)]">Bio <span className="text-[var(--muted-text)] text-xs ml-1">(Optional)</span></Label>
                 <Textarea
                     id="bio"
                     name="bio"
                     defaultValue={profile?.bio || ""}
                     placeholder="Tell us about yourself..."
-                    className="bg-surface-50 border-white/10 text-white min-h-[120px]"
+                    className="bg-[var(--card-bg)] border-white/10 text-white min-h-[120px]"
                 />
-                <p className="text-xs text-gray-400">Share a little about yourself, your travel style, or what you love about hosting.</p>
+                <p className="text-xs text-[var(--muted-text)]">Share a little about yourself, your travel style, or what you love about hosting.</p>
             </div>
 
             <div className="space-y-2">
-                <Label className="text-white">Languages Spoken <span className="text-gray-500 text-xs ml-1">(Optional)</span></Label>
+                <Label className="text-[var(--page-text)]">Languages Spoken <span className="text-[var(--muted-text)] text-xs ml-1">(Optional)</span></Label>
                 <TagInput
                     placeholder="Add a language (e.g. English, French)"
                     tags={languages}
@@ -87,7 +87,7 @@ export function ProfileEditForm({ user, profile }: ProfileEditFormProps) {
             </div>
 
             <div className="space-y-2">
-                <Label className="text-white">Hobbies & Interests <span className="text-gray-500 text-xs ml-1">(Optional)</span></Label>
+                <Label className="text-[var(--page-text)]">Hobbies & Interests <span className="text-[var(--muted-text)] text-xs ml-1">(Optional)</span></Label>
                 <TagInput
                     placeholder="Add a hobby (e.g. Photography, Hiking)"
                     tags={hobbies}

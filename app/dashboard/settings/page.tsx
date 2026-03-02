@@ -28,22 +28,22 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
     return (
         <div className="max-w-6xl mx-auto space-y-8 p-6">
             <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
-                <p className="text-gray-400">Manage your verification, payment methods, and security preferences.</p>
+                <h1 className="text-3xl font-bold text-[var(--page-text)] mb-2">Account Settings</h1>
+                <p className="text-[var(--muted-text)]">Manage your verification, payment methods, and security preferences.</p>
             </div>
 
             <Tabs defaultValue={currentTab} className="space-y-8">
-                <TabsList className="bg-surface-100 border border-white/10 p-1 rounded-lg">
+                <TabsList className="bg-[var(--surface-100)] border border-[var(--card-border)] p-1 rounded-lg flex flex-col md:flex-row h-auto w-full md:w-max">
                     {/* Profile Tab Removed - Now in /dashboard/profile */}
-                    <TabsTrigger value="verification" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-gray-400">
+                    <TabsTrigger value="verification" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-[var(--muted-text)] w-full justify-start md:w-auto md:justify-center">
                         <ShieldCheck className="w-4 h-4 mr-2" />
                         ID Verification
                     </TabsTrigger>
-                    <TabsTrigger value="billing" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-gray-400">
+                    <TabsTrigger value="billing" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-[var(--muted-text)] w-full justify-start md:w-auto md:justify-center">
                         <CreditCard className="w-4 h-4 mr-2" />
                         Payment Methods
                     </TabsTrigger>
-                    <TabsTrigger value="security" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-gray-400">
+                    <TabsTrigger value="security" className="data-[state=active]:bg-gold-500 data-[state=active]:text-black text-[var(--muted-text)] w-full justify-start md:w-auto md:justify-center">
                         <Lock className="w-4 h-4 mr-2" />
                         Privacy & Security
                     </TabsTrigger>

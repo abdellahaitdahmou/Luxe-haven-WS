@@ -71,7 +71,7 @@ export function ReviewModal({ bookingId, propertyName, guestName, type, targetId
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Tell us what you liked or what could be improved..."
-                            className="bg-surface-50 border-white/10 min-h-[100px]"
+                            className="bg-[var(--card-bg)] border-white/10 min-h-[100px]"
                         />
                     </div>
 

@@ -51,7 +51,7 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
 
     if (allImages.length === 0) {
         return (
-            <div className="h-[40vh] md:h-[60vh] bg-surface-50 rounded-3xl flex items-center justify-center text-gray-500 border border-white/10">
+            <div className="h-[40vh] md:h-[60vh] bg-[var(--card-bg)] rounded-3xl flex items-center justify-center text-[var(--muted-text)] border border-[var(--card-border)]">
                 <div className="text-center">
                     <ImageIcon className="w-12 h-12 mx-auto mb-2 opacity-50" />
                     <p>No images available</p>
@@ -71,7 +71,7 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
                             onClick={() => setActiveCategory(cat)}
                             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${activeCategory === cat
                                 ? "bg-gold-500 text-black shadow-lg shadow-gold-500/20"
-                                : "bg-surface-50 text-gray-400 hover:bg-white/10 hover:text-white border border-white/5"
+                                : "bg-[var(--card-bg)] text-[var(--muted-text)] hover:bg-[var(--surface-100)] hover:text-[var(--page-text)] border border-[var(--card-border)]"
                                 }`}
                         >
                             {cat}
@@ -115,8 +115,8 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
 
                     {/* Placeholder for empty lots if filtering results in < 5 images */}
                     {Array.from({ length: Math.max(0, 4 - gridImages.slice(1).length) }).map((_, idx) => (
-                        <div key={`empty-${idx}`} className="bg-surface-50/50 flex items-center justify-center">
-                            <ImageIcon className="w-8 h-8 text-white/10" />
+                        <div key={`empty-${idx}`} className="bg-[var(--surface-50)]/50 flex items-center justify-center">
+                            <ImageIcon className="w-8 h-8 text-[var(--muted-text)] opacity-20" />
                         </div>
                     ))}
                 </div>
@@ -125,7 +125,7 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
                 <div className="absolute bottom-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-300">
                     <button
                         onClick={() => alert("Full gallery view implementing soon...")}
-                        className="bg-white/90 backdrop-blur text-black px-4 py-2 rounded-lg text-sm font-semibold shadow-lg flex items-center gap-2 hover:scale-105 transition"
+                        className="bg-[var(--card-bg)]/90 backdrop-blur text-[var(--page-text)] px-4 py-2 rounded-lg text-sm font-semibold shadow-lg flex items-center gap-2 hover:scale-105 transition"
                     >
                         <Grid className="w-4 h-4" />
                         Show all ({displayImages.length})

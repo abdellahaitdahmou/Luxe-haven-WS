@@ -120,45 +120,45 @@ function HostDashboard({ user }: { user: any }) {
             {/* Header */}
             <div>
                 <h1 className="text-3xl font-bold text-white mb-2">Host Dashboard</h1>
-                <p className="text-gray-400">Welcome back! Here's what's happening with your listings.</p>
+                <p className="text-[var(--muted-text)]">Welcome back! Here's what's happening with your listings.</p>
             </div>
 
             {/* Filters Row */}
-            <div className="flex flex-wrap gap-4 bg-surface-50 border border-white/10 rounded-lg p-4">
+            <div className="flex flex-wrap gap-4 bg-[var(--card-bg)] border border-white/10 rounded-lg p-4">
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs text-gray-400 font-medium">Year</label>
+                    <label className="text-xs text-[var(--muted-text)] font-medium">Year</label>
                     <Select value={selectedYear} onValueChange={setSelectedYear}>
-                        <SelectTrigger className="w-[120px] bg-surface-100 border-white/10 text-white"><SelectValue /></SelectTrigger>
-                        <SelectContent className="bg-surface-100 border-white/10 text-white">
+                        <SelectTrigger className="w-[120px] bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]"><SelectValue /></SelectTrigger>
+                        <SelectContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                             {YEARS.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs text-gray-400 font-medium">Month</label>
+                    <label className="text-xs text-[var(--muted-text)] font-medium">Month</label>
                     <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                        <SelectTrigger className="w-[140px] bg-surface-100 border-white/10 text-white"><SelectValue /></SelectTrigger>
-                        <SelectContent className="bg-surface-100 border-white/10 text-white">
+                        <SelectTrigger className="w-[140px] bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]"><SelectValue /></SelectTrigger>
+                        <SelectContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                             <SelectItem value="all">All Months</SelectItem>
                             {MONTHS.map((m, idx) => <SelectItem key={idx} value={String(idx)}>{m}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs text-gray-400 font-medium">Property</label>
+                    <label className="text-xs text-[var(--muted-text)] font-medium">Property</label>
                     <Select value={selectedProperty} onValueChange={setSelectedProperty}>
-                        <SelectTrigger className="w-[200px] bg-surface-100 border-white/10 text-white"><SelectValue /></SelectTrigger>
-                        <SelectContent className="bg-surface-100 border-white/10 text-white">
+                        <SelectTrigger className="w-[200px] bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]"><SelectValue /></SelectTrigger>
+                        <SelectContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                             <SelectItem value="all">All Properties</SelectItem>
                             {properties.map((p) => <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>)}
                         </SelectContent>
                     </Select>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs text-gray-400 font-medium">Bedrooms</label>
+                    <label className="text-xs text-[var(--muted-text)] font-medium">Bedrooms</label>
                     <Select value={selectedBedrooms} onValueChange={setSelectedBedrooms}>
-                        <SelectTrigger className="w-[130px] bg-surface-100 border-white/10 text-white"><SelectValue /></SelectTrigger>
-                        <SelectContent className="bg-surface-100 border-white/10 text-white">
+                        <SelectTrigger className="w-[130px] bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]"><SelectValue /></SelectTrigger>
+                        <SelectContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                             <SelectItem value="all">All</SelectItem>
                             {bedroomOptions.map((b) => <SelectItem key={b} value={String(b)}>{b} Bedroom{b > 1 ? "s" : ""}</SelectItem>)}
                         </SelectContent>
@@ -168,50 +168,50 @@ function HostDashboard({ user }: { user: any }) {
 
             {/* Stats Grid */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Total Earnings</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Total Earnings</CardTitle>
                         <DollarSign className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">${stats.earnings.toFixed(2)}</div>
-                        <p className="text-xs text-gray-500 mt-1">Wallet balance (all time)</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">Wallet balance (all time)</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Filtered Revenue</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Filtered Revenue</CardTitle>
                         <TrendingUp className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-gold-500">${filteredStats.revenue.toFixed(2)}</div>
-                        <p className="text-xs text-gray-500 mt-1">Based on current filters</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">Based on current filters</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Filtered Bookings</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Filtered Bookings</CardTitle>
                         <Users className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{filteredStats.count}</div>
-                        <p className="text-xs text-gray-500 mt-1">of {stats.totalBookings} total</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">of {stats.totalBookings} total</p>
                     </CardContent>
                 </Card>
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-gray-400">Average Rating</CardTitle>
+                        <CardTitle className="text-sm font-medium text-[var(--muted-text)]">Average Rating</CardTitle>
                         <Star className="h-4 w-4 text-gold-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.averageRating}</div>
-                        <p className="text-xs text-gray-500 mt-1">{stats.activeListings} active listings</p>
+                        <p className="text-xs text-[var(--muted-text)] mt-1">{stats.activeListings} active listings</p>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Chart */}
-            <Card className="bg-surface-50 border-white/10 text-white p-6">
+            <Card className="bg-[var(--card-bg)] border-white/10 text-white p-6">
                 <CardHeader className="px-0 pt-0">
                     <CardTitle className="text-lg">Revenue & Bookings — {selectedYear}</CardTitle>
                 </CardHeader>
@@ -247,21 +247,21 @@ function HostDashboard({ user }: { user: any }) {
 
             {/* Recent Bookings */}
             <div className="space-y-4">
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-xl font-bold text-[var(--page-text)]">
                     Recent Bookings
-                    {filteredBookings.length !== allBookings.length && <span className="text-sm font-normal text-gray-400 ml-2">(Showing {filteredBookings.length} of {allBookings.length})</span>}
+                    {filteredBookings.length !== allBookings.length && <span className="text-sm font-normal text-[var(--muted-text)] ml-2">(Showing {filteredBookings.length} of {allBookings.length})</span>}
                 </h2>
                 {filteredBookings.length === 0 ? (
-                    <Card className="bg-surface-50 border-white/10 text-white p-6 text-center text-gray-400">No bookings match your filters.</Card>
+                    <Card className="bg-[var(--card-bg)] border-white/10 text-white p-6 text-center text-[var(--muted-text)]">No bookings match your filters.</Card>
                 ) : (
                     <div className="grid gap-4">
                         {filteredBookings.slice(0, 8).map((booking) => (
-                            <div key={booking.id} className="bg-surface-50 border border-white/10 rounded-lg p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
+                            <div key={booking.id} className="bg-[var(--card-bg)] border border-white/10 rounded-lg p-4 flex items-center justify-between hover:bg-white/5 transition-colors">
                                 <div className="flex items-center space-x-4">
                                     <div className="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 font-bold">{booking.profiles?.full_name?.charAt(0) || "G"}</div>
                                     <div>
-                                        <p className="font-bold text-white">{booking.profiles?.full_name || "Guest"}</p>
-                                        <p className="text-sm text-gray-400">{booking.properties?.title}</p>
+                                        <p className="font-bold text-[var(--page-text)]">{booking.profiles?.full_name || "Guest"}</p>
+                                        <p className="text-sm text-[var(--muted-text)]">{booking.properties?.title}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -269,7 +269,7 @@ function HostDashboard({ user }: { user: any }) {
                                         <span className="font-bold text-gold-500">${booking.total_price}</span>
                                         <Badge variant="outline" className={`${booking.status === "confirmed" ? "bg-green-500/20 text-green-500 border-green-500/50" : ""} ${booking.status === "pending" ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/50" : ""} ${booking.status === "cancelled" ? "bg-red-500/20 text-red-500 border-red-500/50" : ""}`}>{booking.status}</Badge>
                                     </div>
-                                    <p className="text-xs text-gray-500">{new Date(booking.check_in_date).toLocaleDateString()} — {new Date(booking.check_out_date).toLocaleDateString()}</p>
+                                    <p className="text-xs text-[var(--muted-text)]">{new Date(booking.check_in_date).toLocaleDateString()} — {new Date(booking.check_out_date).toLocaleDateString()}</p>
                                 </div>
                             </div>
                         ))}
@@ -319,17 +319,17 @@ function TravelerDashboard({ user }: { user: any }) {
                 <h1 className="text-4xl font-bold text-white mb-4">
                     Welcome back, {user.user_metadata?.full_name?.split(' ')[0] || "Traveler"} 👋
                 </h1>
-                <p className="text-gray-400 text-lg">Find your next extraordinary stay.</p>
+                <p className="text-[var(--muted-text)] text-lg">Find your next extraordinary stay.</p>
             </div>
 
             {/* Upcoming Trip Section (Only if exists) */}
             {upcomingTrip && (
                 <div>
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-bold text-white">Your Upcoming Trip</h2>
+                        <h2 className="text-2xl font-bold text-[var(--page-text)]">Your Upcoming Trip</h2>
                         <Link href="/dashboard/trips" className="text-sm text-gold-500 hover:underline">View all trips</Link>
                     </div>
-                    <div className="bg-surface-50 border border-white/10 rounded-xl overflow-hidden hover:border-gold-500/50 transition-colors group relative max-w-4xl">
+                    <div className="bg-[var(--card-bg)] border border-white/10 rounded-xl overflow-hidden hover:border-gold-500/50 transition-colors group relative max-w-4xl">
                         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
                         <img
                             src={upcomingTrip.properties?.image_url || "/placeholder-property.jpg"}
@@ -342,7 +342,7 @@ function TravelerDashboard({ user }: { user: any }) {
                                     <p className="text-xs font-bold text-gold-500 uppercase tracking-wider mb-1">
                                         {new Date(upcomingTrip.check_in_date).toLocaleDateString()}
                                     </p>
-                                    <h3 className="text-2xl font-bold text-white">{upcomingTrip.properties?.title}</h3>
+                                    <h3 className="text-2xl font-bold text-[var(--page-text)]">{upcomingTrip.properties?.title}</h3>
                                 </div>
                                 <Link href={`/dashboard/trips`}>
                                     <Button variant="outline" className="border-white/20 text-white hover:bg-white hover:text-black">
@@ -358,7 +358,7 @@ function TravelerDashboard({ user }: { user: any }) {
             {/* All Properties Grid */}
             <div>
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-white">Explore Properties</h2>
+                    <h2 className="text-2xl font-bold text-[var(--page-text)]">Explore Properties</h2>
                     <div className="flex gap-2">
                         {/* Categories/Filters could go here */}
                     </div>
@@ -367,14 +367,14 @@ function TravelerDashboard({ user }: { user: any }) {
                 {loading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="h-80 bg-surface-50 rounded-xl animate-pulse"></div>
+                            <div key={i} className="h-80 bg-[var(--card-bg)] rounded-xl animate-pulse"></div>
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {properties.map((property) => (
                             <Link href={`/properties/${property.id}`} key={property.id} className="group block">
-                                <div className="bg-surface-50 border border-white/10 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:border-gold-500/30 transition-all duration-300 h-full flex flex-col">
+                                <div className="bg-[var(--card-bg)] border border-white/10 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:border-gold-500/30 transition-all duration-300 h-full flex flex-col">
                                     {/* Image */}
                                     <div className="relative aspect-[4/3] overflow-hidden">
                                         <img
@@ -382,7 +382,7 @@ function TravelerDashboard({ user }: { user: any }) {
                                             alt={property.title}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
-                                        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-sm font-bold flex items-center gap-1 border border-white/10">
+                                        <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-white text-sm font-bold flex items-center gap-1 border border-[var(--card-border)]">
                                             <Star className="w-3 h-3 text-gold-500 fill-gold-500" />
                                             <span>
                                                 {(property.review_count > 0 && property.average_rating) ? property.average_rating : "New"}
@@ -398,25 +398,25 @@ function TravelerDashboard({ user }: { user: any }) {
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
                                                 <h3 className="font-bold text-white text-lg group-hover:text-gold-500 transition-colors line-clamp-1">{property.title}</h3>
-                                                <p className="text-sm text-gray-400 flex items-center gap-1 mt-1">
+                                                <p className="text-sm text-[var(--muted-text)] flex items-center gap-1 mt-1">
                                                     <Map className="w-3 h-3" />
                                                     {property.city || "Unknown City"}, {property.country || "Unknown Country"}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        <p className="text-gray-400 text-sm line-clamp-2 mb-4 flex-1">
+                                        <p className="text-[var(--muted-text)] text-sm line-clamp-2 mb-4 flex-1">
                                             {property.description}
                                         </p>
 
                                         <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
-                                            <div className="flex items-center gap-2 text-sm text-gray-400">
+                                            <div className="flex items-center gap-2 text-sm text-[var(--muted-text)]">
                                                 <Users className="w-4 h-4" />
                                                 <span>{property.max_guests} guests</span>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-xl font-bold text-white">${property.price_per_night}</span>
-                                                <span className="text-sm text-gray-500"> / night</span>
+                                                <span className="text-xl font-bold text-[var(--page-text)]">${property.price_per_night}</span>
+                                                <span className="text-sm text-[var(--muted-text)]"> / night</span>
                                             </div>
                                         </div>
                                     </div>

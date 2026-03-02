@@ -125,4 +125,40 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- 7. Accounting System (Expenses & Received Payments)
+CREATE TYPE expense_payment_method AS ENUM ('cash', 'personal_virement', 'society_virement');
+CREATE TYPE received_payment_method AS ENUM ('cash', 'virement');
+
+CREATE TABLE expenses (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  description TEXT NOT NULL,
+  amount DECIMAL(12, 2) NOT NULL,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  payment_method expense_payment_method NOT NULL,
+  created_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE received_payments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  amount DECIMAL(12, 2) NOT NULL,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  motif TEXT NOT NULL,
+  from_whom TEXT NOT NULL,
+  payment_method received_payment_method NOT NULL,
+  received_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  created_by UUID REFERENCES profiles(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE received_payments ENABLE ROW LEVEL SECURITY;
+
+-- Policies for Admins and Managers
+CREATE POLICY "Admins and managers can manage expenses" ON expenses
+  FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'manager')));
+
+CREATE POLICY "Admins and managers can manage received payments" ON received_payments
+  FOR ALL USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'manager')));
+

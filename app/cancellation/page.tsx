@@ -1,10 +1,10 @@
 export default function CancellationPage() {
     return (
-        <div className="min-h-screen bg-black pt-32 pb-20 px-6">
+        <div className="min-h-screen bg-[var(--page-bg)] text-[var(--page-text)] pt-32 pb-20 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">Cancellation Policies</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-[var(--muted-text)] max-w-2xl mx-auto leading-relaxed">
                         Flexible and transparent cancellation options designed to accommodate the dynamic schedules of the global elite.
                     </p>
                 </div>
@@ -20,14 +20,14 @@ export default function CancellationPage() {
                                 <h3 className="text-2xl font-bold text-gold-500">{policy.title}</h3>
                             </div>
                             <div className="w-full md:w-2/3">
-                                <p className="text-gray-400 text-lg leading-relaxed">{policy.desc}</p>
+                                <p className="text-[var(--muted-text)] text-lg leading-relaxed">{policy.desc}</p>
                             </div>
                         </div>
                     ))}
                 </div>
 
                 <div className="mt-12 text-center">
-                    <p className="text-gray-500 text-sm">Note: Extenuating circumstances (such as global travel bans) are reviewed on a case-by-case basis by our premium support team.</p>
+                    <p className="text-[var(--muted-text)] text-sm">Note: Extenuating circumstances (such as global travel bans) are reviewed on a case-by-case basis by our premium support team.</p>
                 </div>
             </div>
         </div>

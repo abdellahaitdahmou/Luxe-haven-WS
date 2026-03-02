@@ -118,9 +118,9 @@ export function NotificationBell() {
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 rounded-full bg-white/10 hover:bg-white/20 transition border border-white/10 group"
+                className="relative p-2 rounded-full bg-[var(--surface-100)] hover:bg-[var(--surface-200)] transition border border-[var(--card-border)] group"
             >
-                <Bell className="w-5 h-5 text-white group-hover:text-gold-400 transition" />
+                <Bell className="w-5 h-5 text-[var(--muted-text)] group-hover:text-gold-500 transition" />
                 {unreadCount > 0 && (
                     <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] flex items-center justify-center rounded-full animate-pulse">
                         {unreadCount > 9 ? '9+' : unreadCount}
@@ -139,10 +139,10 @@ export function NotificationBell() {
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-80 bg-[#18181b] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden"
+                            className="absolute right-0 mt-2 w-80 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl shadow-2xl z-50 overflow-hidden"
                         >
-                            <div className="p-4 border-b border-white/10 flex justify-between items-center">
-                                <h3 className="text-white font-semibold text-sm">Notifications</h3>
+                            <div className="p-4 border-b border-[var(--card-border)] flex justify-between items-center">
+                                <h3 className="text-[var(--page-text)] font-semibold text-sm">Notifications</h3>
                                 {unreadCount > 0 && (
                                     <button
                                         onClick={async () => {
@@ -170,33 +170,33 @@ export function NotificationBell() {
                                                 markAsRead(notif.id)
                                                 setIsOpen(false)
                                             }}
-                                            className={`block p-4 border-b border-white/5 hover:bg-white/5 transition relative ${!notif.is_read ? 'bg-white/[0.02]' : ''}`}
+                                            className={`block p-4 border-b border-[var(--card-border)] hover:bg-black/5 dark:hover:bg-white/5 transition relative ${!notif.is_read ? 'bg-black/[0.02] dark:bg-white/[0.02]' : ''}`}
                                         >
                                             {!notif.is_read && (
                                                 <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-gold-600 rounded-full" />
                                             )}
                                             <div className="flex flex-col gap-1">
                                                 <div className="flex justify-between items-start">
-                                                    <span className="text-white text-xs font-medium">{notif.title}</span>
-                                                    <span className="text-[10px] text-gray-500">
+                                                    <span className="text-[var(--page-text)] text-xs font-medium">{notif.title}</span>
+                                                    <span className="text-[10px] text-[var(--muted-text)]">
                                                         {formatDistanceToNow(new Date(notif.created_at))} ago
                                                     </span>
                                                 </div>
-                                                <p className="text-gray-400 text-xs line-clamp-2">{notif.content}</p>
+                                                <p className="text-[var(--muted-text)] text-xs line-clamp-2">{notif.content}</p>
                                             </div>
                                         </Link>
                                     ))
                                 ) : (
                                     <div className="p-8 text-center">
                                         <Bell className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                                        <p className="text-gray-500 text-sm">No notifications yet</p>
+                                        <p className="text-[var(--muted-text)] text-sm">No notifications yet</p>
                                     </div>
                                 )}
                             </div>
 
                             <Link
                                 href="/dashboard"
-                                className="block p-3 text-center text-xs text-gray-400 hover:text-white transition bg-white/5"
+                                className="block p-3 text-center text-xs text-[var(--muted-text)] hover:text-[var(--page-text)] transition bg-[var(--surface-100)]"
                                 onClick={() => setIsOpen(false)}
                             >
                                 View all dashboard activity

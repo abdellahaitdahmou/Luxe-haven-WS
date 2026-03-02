@@ -83,23 +83,23 @@ export default function WalletPage() {
         }
     }
 
-    if (loading) return <div className="p-8 text-white">Loading wallet...</div>;
+    if (loading) return <div className="p-8 text-[var(--page-text)]">Loading wallet...</div>;
 
     return (
         <div className="space-y-8 max-w-5xl mx-auto">
             <div>
                 <h1 className="text-3xl font-bold text-white mb-2">My Wallet</h1>
-                <p className="text-gray-400">Manage your earnings and payouts.</p>
+                <p className="text-[var(--muted-text)]">Manage your earnings and payouts.</p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
                 {/* Available Balance */}
-                <Card className="bg-surface-100 border-gold-500/50 border text-white relative overflow-hidden">
+                <Card className="bg-[var(--surface-100)] border-gold-500/50 border text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <DollarSign className="w-24 h-24" />
                     </div>
                     <CardHeader>
-                        <CardTitle className="text-gray-400 font-medium text-sm">Available Balance</CardTitle>
+                        <CardTitle className="text-[var(--muted-text)] font-medium text-sm">Available Balance</CardTitle>
                         <div className="text-4xl font-bold text-gold-500">
                             ${wallet?.available_balance?.toFixed(2) || "0.00"}
                         </div>
@@ -111,7 +111,7 @@ export default function WalletPage() {
                                     <ArrowUpRight className="mr-2 h-4 w-4" /> Withdraw Funds
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="bg-surface-100 border-white/10 text-white">
+                            <DialogContent className="bg-[var(--surface-100)] border-white/10 text-[var(--page-text)]">
                                 <DialogHeader>
                                     <DialogTitle>Request Payout</DialogTitle>
                                 </DialogHeader>
@@ -121,11 +121,11 @@ export default function WalletPage() {
                                         <Input
                                             type="number"
                                             placeholder="0.00"
-                                            className="bg-surface-50 border-white/10"
+                                            className="bg-[var(--card-bg)] border-[var(--card-border)]"
                                             value={withdrawAmount}
                                             onChange={(e) => setWithdrawAmount(e.target.value)}
                                         />
-                                        <p className="text-xs text-gray-400">
+                                        <p className="text-xs text-[var(--muted-text)]">
                                             Available: ${wallet?.available_balance?.toFixed(2)}
                                         </p>
                                     </div>
@@ -139,15 +139,15 @@ export default function WalletPage() {
                 </Card>
 
                 {/* Pending Balance */}
-                <Card className="bg-surface-50 border-white/10 text-white">
+                <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                     <CardHeader>
-                        <CardTitle className="text-gray-400 font-medium text-sm">Pending Balance</CardTitle>
-                        <div className="text-4xl font-bold text-white">
+                        <CardTitle className="text-[var(--muted-text)] font-medium text-sm">Pending Balance</CardTitle>
+                        <div className="text-4xl font-bold text-[var(--page-text)]">
                             ${wallet?.pending_balance?.toFixed(2) || "0.00"}
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-sm text-gray-400 flex items-center">
+                        <p className="text-sm text-[var(--muted-text)] flex items-center">
                             <Clock className="w-4 h-4 mr-2" />
                             Funds are available 24 hours after check-in.
                         </p>
@@ -156,20 +156,20 @@ export default function WalletPage() {
             </div>
 
             {/* Transaction History */}
-            <Card className="bg-surface-50 border-white/10 text-white">
+            <Card className="bg-[var(--card-bg)] border-white/10 text-[var(--page-text)]">
                 <CardHeader>
                     <CardTitle>Payout History</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
                         {transactions.length === 0 ? (
-                            <p className="text-gray-400">No payouts yet.</p>
+                            <p className="text-[var(--muted-text)]">No payouts yet.</p>
                         ) : (
                             transactions.map((tx) => (
-                                <div key={tx.id} className="flex justify-between items-center p-4 bg-surface-100 rounded-lg border border-white/5">
+                                <div key={tx.id} className="flex justify-between items-center p-4 bg-[var(--surface-100)] rounded-lg border border-[var(--card-border)]">
                                     <div>
                                         <p className="font-bold">Withdrawal Request</p>
-                                        <p className="text-xs text-gray-400">{new Date(tx.created_at).toLocaleDateString()}</p>
+                                        <p className="text-xs text-[var(--muted-text)]">{new Date(tx.created_at).toLocaleDateString()}</p>
                                     </div>
                                     <div className="text-right">
                                         <p className="font-bold text-lg">-${tx.amount}</p>

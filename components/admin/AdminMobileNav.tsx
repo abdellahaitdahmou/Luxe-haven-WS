@@ -14,7 +14,7 @@ export function AdminMobileNav() {
                 LUXE ADMIN
             </span>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? <X className="text-white" /> : <Menu className="text-white" />}
+                {isOpen ? <X className="text-[var(--page-text)]" /> : <Menu className="text-[var(--page-text)]" />}
             </Button>
 
             {/* Overlay Menu */}

@@ -25,7 +25,7 @@ export async function getConversations() {
 
     const [profilesRes, propertiesRes, unreadRes] = await Promise.all([
         supabase.from('profiles').select('id, full_name, avatar_url').in('id', profileIds),
-        supabase.from('properties').select('id, title').in('id', propertyIds),
+        supabase.from('properties').select('id, title, image_urls, images, city').in('id', propertyIds),
         supabase.from('messages')
             .select('conversation_id')
             .in('conversation_id', conversationIds)
@@ -36,7 +36,8 @@ export async function getConversations() {
     const profileMap: Record<string, { id: string, full_name: string | null, avatar_url: string | null }> = {};
     (profilesRes.data || []).forEach(p => { profileMap[p.id] = p; });
 
-    const propertyMap: Record<string, { id: string, title: string }> = {};
+    // Explicitly type the property map to include the jsonb 'images' array
+    const propertyMap: Record<string, { id: string, title: string, image_urls: string[] | null, images: any[] | null, city: string | null }> = {};
     (propertiesRes.data || []).forEach(p => { propertyMap[p.id] = p; });
 
     const unreadCounts: Record<string, number> = {};
@@ -82,6 +83,7 @@ export async function getMessages(conversationId: string) {
         msg_content: string;
         msg_is_read: boolean;
         msg_type: string;
+        msg_booking_id: string;
         msg_created_at: string;
     }) => ({
         id: m.msg_id,
@@ -90,6 +92,7 @@ export async function getMessages(conversationId: string) {
         content: m.msg_content,
         is_read: m.msg_is_read,
         message_type: m.msg_type,
+        booking_id: m.msg_booking_id,
         created_at: m.msg_created_at
     }));
 }
@@ -116,7 +119,7 @@ export async function getConversation(conversationId: string) {
     const [guestRes, ownerRes, propertyRes] = await Promise.all([
         supabase.from('profiles').select('full_name, avatar_url, email').eq('id', conv.guest_id).single(),
         supabase.from('profiles').select('full_name, avatar_url, email').eq('id', conv.owner_id).single(),
-        supabase.from('properties').select('id, title, image_urls, price_per_night, city, address').eq('id', conv.property_id).single(),
+        supabase.from('properties').select('id, title, image_urls, images, price_per_night, city, address').eq('id', conv.property_id).single(),
     ]);
 
     const guest = guestRes.data;

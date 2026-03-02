@@ -89,7 +89,7 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                         <ShieldCheck className="w-6 h-6 text-gold-500" />
                         ID Verification
                     </DialogTitle>
-                    <DialogDescription className="text-gray-400">
+                    <DialogDescription className="text-[var(--muted-text)]">
                         To ensure safety, please verify your identity.
                     </DialogDescription>
                     {/* Explicit Close Button if needed, but Dialog X usually exists. 
@@ -106,7 +106,7 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                                     <Loader2 className="w-8 h-8 text-yellow-500 animate-spin" />
                                 </div>
                                 <h3 className="text-xl font-bold">Verification Pending</h3>
-                                <p className="text-gray-400 mt-2">
+                                <p className="text-[var(--muted-text)] mt-2">
                                     We are reviewing your document. This usually takes a few minutes.
                                 </p>
                                 <Button onClick={() => onOpenChange(false)} className="mt-6 w-full bg-white/10 hover:bg-white/20">
@@ -130,18 +130,18 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                 {step === 'type' && (
                     <div className="grid grid-cols-2 gap-4 py-4">
                         <Card
-                            className={`p-6 bg-surface-50 border-white/10 hover:border-gold-500 cursor-pointer transition-all flex flex-col items-center gap-4 ${docType === 'passport' ? 'border-gold-500 bg-gold-500/10' : ''}`}
+                            className={`p-6 bg-[var(--card-bg)] border-white/10 hover:border-gold-500 cursor-pointer transition-all flex flex-col items-center gap-4 ${docType === 'passport' ? 'border-gold-500 bg-gold-500/10' : ''}`}
                             onClick={() => setDocType('passport')}
                         >
                             <FileText className="w-10 h-10 text-blue-400" />
-                            <span className="font-bold text-white">Passport</span>
+                            <span className="font-bold text-[var(--page-text)]">Passport</span>
                         </Card>
                         <Card
-                            className={`p-6 bg-surface-50 border-white/10 hover:border-gold-500 cursor-pointer transition-all flex flex-col items-center gap-4 ${docType === 'id_card' ? 'border-gold-500 bg-gold-500/10' : ''}`}
+                            className={`p-6 bg-[var(--card-bg)] border-white/10 hover:border-gold-500 cursor-pointer transition-all flex flex-col items-center gap-4 ${docType === 'id_card' ? 'border-gold-500 bg-gold-500/10' : ''}`}
                             onClick={() => setDocType('id_card')}
                         >
                             <FileText className="w-10 h-10 text-green-400" />
-                            <span className="font-bold text-white">ID Card</span>
+                            <span className="font-bold text-[var(--page-text)]">ID Card</span>
                         </Card>
                         <div className="col-span-2 mt-4">
                             <Button className="w-full bg-gold-500 text-black hover:bg-gold-400 font-bold" disabled={!docType} onClick={() => setStep('method')}>
@@ -156,19 +156,19 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                     <div className="space-y-4 py-4">
                         <Button
                             variant="outline"
-                            className="w-full h-16 bg-surface-50 border-white/10 hover:bg-white/5 hover:border-gold-500 justify-start px-6 gap-4 text-lg"
+                            className="w-full h-16 bg-[var(--card-bg)] border-white/10 hover:bg-white/5 hover:border-gold-500 justify-start px-6 gap-4 text-lg"
                             onClick={() => { setMethod('upload'); setStep('preview'); }} // Directly go to preview (which handles upload input)
                         >
                             <Upload className="w-6 h-6 text-gold-500" />
                             Upload File
                         </Button>
                         <div className="relative">
-                            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/10"></span></div>
-                            <div className="relative flex justify-center text-xs uppercase"><span className="bg-surface-100 px-2 text-gray-400">Or</span></div>
+                            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[var(--card-border)]"></span></div>
+                            <div className="relative flex justify-center text-xs uppercase"><span className="bg-surface-100 px-2 text-[var(--muted-text)]">Or</span></div>
                         </div>
                         <Button
                             variant="outline"
-                            className="w-full h-16 bg-surface-50 border-white/10 hover:bg-white/5 hover:border-gold-500 justify-start px-6 gap-4 text-lg"
+                            className="w-full h-16 bg-[var(--card-bg)] border-white/10 hover:bg-white/5 hover:border-gold-500 justify-start px-6 gap-4 text-lg"
                             onClick={() => { setMethod('camera'); setStep('capture'); }}
                         >
                             <Camera className="w-6 h-6 text-gold-500" />
@@ -199,15 +199,15 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                                     onChange={handleFileUpload}
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 />
-                                <Upload className="w-10 h-10 text-gray-400 mx-auto mb-4" />
+                                <Upload className="w-10 h-10 text-[var(--muted-text)] mx-auto mb-4" />
                                 <p className="font-bold">Click to upload or drag and drop</p>
-                                <p className="text-sm text-gray-500">JPG, PNG or PDF (Max 5MB)</p>
+                                <p className="text-sm text-[var(--muted-text)]">JPG, PNG or PDF (Max 5MB)</p>
                             </div>
                         )}
 
                         {file && (
                             <div className="space-y-4">
-                                <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-white/10">
+                                <div className="relative aspect-video bg-black rounded-lg overflow-hidden border border-[var(--card-border)]">
                                     <img
                                         src={URL.createObjectURL(file)}
                                         alt="Preview"
@@ -218,12 +218,12 @@ export function VerificationModal({ isOpen, onOpenChange, isVerified }: Verifica
                                         className="absolute top-2 right-2 bg-black/50 hover:bg-red-500 rounded-full"
                                         onClick={() => setFile(null)}
                                     >
-                                        <X className="w-4 h-4 text-white" />
+                                        <X className="w-4 h-4 text-[var(--page-text)]" />
                                     </Button>
                                 </div>
                                 <div className="text-center">
-                                    <p className="font-bold text-white">{docType === 'passport' ? 'Passport' : 'ID Card'}</p>
-                                    <p className="text-sm text-gray-400">File: {file.name}</p>
+                                    <p className="font-bold text-[var(--page-text)]">{docType === 'passport' ? 'Passport' : 'ID Card'}</p>
+                                    <p className="text-sm text-[var(--muted-text)]">File: {file.name}</p>
                                 </div>
                                 <div className="flex gap-4">
                                     <Button variant="outline" onClick={() => setFile(null)} className="flex-1">Retake</Button>

@@ -53,7 +53,13 @@ export default function AddPropertyPage() {
     const [beds, setBeds] = useState(1);
     const [bathrooms, setBathrooms] = useState(1);
     const [amenities, setAmenities] = useState<string[]>([]);
+
+    // Type States
+    const [listingType, setListingType] = useState("rent");
+    const [priceType, setPriceType] = useState("per_night");
     const [propertyType, setPropertyType] = useState("villa");
+    const [propertyCategory, setPropertyCategory] = useState("residential");
+    const [surfaceArea, setSurfaceArea] = useState("");
 
     // Handle File Selection
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,7 +162,10 @@ export default function AddPropertyPage() {
                 description,
                 price_per_night: parseFloat(price),
                 address,
-                property_type: propertyType,
+                property_type: propertyCategory === 'office' ? 'office' : propertyType,
+                listing_type: propertyCategory === 'office' ? 'rent' : listingType,
+                price_type: propertyCategory === 'office' ? 'per_month' : priceType,
+                surface_area: propertyCategory === 'office' ? (parseInt(surfaceArea) || null) : null,
                 image_urls: imageUrls,
                 images: imagesJson,
                 location: "POINT(0 0)",
@@ -189,68 +198,136 @@ export default function AddPropertyPage() {
                 </Link>
                 <div>
                     <h1 className="text-3xl font-bold">List New Property</h1>
-                    <p className="text-gray-400">Fill in the details to publish a new listing.</p>
+                    <p className="text-[var(--muted-text)]">Fill in the details to publish a new listing.</p>
                 </div>
             </div>
 
             {/* Form Content */}
-            <form onSubmit={handleSubmit} className="relative bg-surface-50 border border-white/5 p-8 rounded-3xl shadow-2xl space-y-8 h-full w-full">
+            <form onSubmit={handleSubmit} className="relative bg-[var(--card-bg)] border border-white/5 p-8 rounded-3xl shadow-2xl space-y-8 h-full w-full">
 
                 {/* Basic Info */}
                 <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-gold-500 border-b border-white/10 pb-2">Basic Information</h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-400">Property Title</label>
-                            <input
-                                required
-                                type="text"
-                                value={title}
-                                onChange={e => setTitle(e.target.value)}
-                                placeholder="e.g. Luxury Ocean Villa"
-                                className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
-                            />
+                    <div className="space-y-2 mb-6">
+                        <label className="text-sm font-semibold text-[var(--muted-text)]">Property Category</label>
+                        <div className="grid grid-cols-2 gap-2">
+                            <button
+                                type="button"
+                                onClick={() => { setPropertyCategory("residential"); setPropertyType("villa"); setPriceType("per_night"); setListingType("rent"); }}
+                                className={`py-3 px-3 rounded-xl border text-sm font-semibold transition ${propertyCategory === "residential" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'}`}
+                            >Residential Property</button>
+                            <button
+                                type="button"
+                                onClick={() => { setPropertyCategory("office"); setPropertyType("office"); setPriceType("per_month"); setListingType("rent"); }}
+                                className={`py-3 px-3 rounded-xl border text-sm font-semibold transition ${propertyCategory === "office" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'}`}
+                            >Business Office</button>
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-semibold text-gray-400">Price per Night ($)</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gold-500 font-bold text-lg pointer-events-none">$</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                            {propertyCategory === 'residential' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-[var(--muted-text)]">Service Type</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => { setListingType("rent"); setPriceType("per_night"); }}
+                                            className={`py-2 px-3 rounded-xl border text-sm font-semibold transition ${listingType === "rent" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'}`}
+                                        >Rent</button>
+                                        <button
+                                            type="button"
+                                            onClick={() => { setListingType("sale"); setPriceType("fixed"); }}
+                                            className={`py-2 px-3 rounded-xl border text-sm font-semibold transition ${listingType === "sale" ? 'border-gold-500 bg-gold-500/10 text-gold-400' : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'}`}
+                                        >Sale</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-[var(--muted-text)]">Property Title</label>
                                 <input
                                     required
-                                    type="number"
-                                    value={price}
-                                    onChange={e => setPrice(e.target.value)}
-                                    placeholder="350"
-                                    className="w-full bg-black/50 border border-white/10 rounded-xl pl-9 pr-4 py-3 text-white focus:border-gold-500 outline-none transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    type="text"
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                    placeholder={propertyCategory === 'office' ? "e.g. Modern Co-working Space" : "e.g. Luxury Ocean Villa"}
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
                                 />
+                            </div>
+
+                            {propertyCategory === 'office' && (
+                                <div className="space-y-2">
+                                    <label className="text-sm font-semibold text-[var(--muted-text)]">Surface Area (m²)</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={surfaceArea}
+                                        onChange={e => setSurfaceArea(e.target.value)}
+                                        placeholder="e.g. 150"
+                                        className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition"
+                                    />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-[var(--muted-text)]">Pricing Method</label>
+                                <select
+                                    className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-gold-500 outline-none transition appearance-none"
+                                    value={propertyCategory === 'office' ? 'per_month' : priceType}
+                                    onChange={e => setPriceType(e.target.value)}
+                                    disabled={propertyCategory === 'office'}
+                                >
+                                    {propertyCategory === 'residential' && <option value="per_night">Per Night (Stays)</option>}
+                                    <option value="per_month">Per Month ({propertyCategory === 'office' ? 'Rent' : 'Long Term'})</option>
+                                    {propertyCategory === 'residential' && <option value="fixed">Fixed Price (Sale)</option>}
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-semibold text-[var(--muted-text)]">Price {priceType === 'fixed' ? 'Total' : priceType === 'per_month' ? 'per Month' : 'per Night'} (DH)</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500 font-bold text-sm pointer-events-none">DH</span>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={price}
+                                        onChange={e => setPrice(e.target.value)}
+                                        placeholder={priceType === 'fixed' ? "500000" : "350"}
+                                        className="w-full bg-black/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white focus:border-gold-500 outline-none transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Property Type Selector */}
-                    <div className="space-y-3">
-                        <label className="text-sm font-semibold text-gray-400">Property Type</label>
-                        <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
-                            {PROPERTY_TYPES.map(pt => (
-                                <button
-                                    key={pt.value}
-                                    type="button"
-                                    onClick={() => setPropertyType(pt.value)}
-                                    className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border transition text-center ${propertyType === pt.value
-                                        ? 'border-gold-500 bg-gold-500/10 text-gold-400'
-                                        : 'border-white/10 bg-black/30 text-gray-400 hover:border-white/30 hover:text-white'
-                                        }`}
-                                >
-                                    <span className="text-2xl">{pt.emoji}</span>
-                                    <span className="text-xs font-medium">{pt.label}</span>
-                                </button>
-                            ))}
+                    {propertyCategory === 'residential' && (
+                        <div className="space-y-3">
+                            <label className="text-sm font-semibold text-[var(--muted-text)]">Property Type</label>
+                            <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                                {PROPERTY_TYPES.map(pt => (
+                                    <button
+                                        key={pt.value}
+                                        type="button"
+                                        onClick={() => setPropertyType(pt.value)}
+                                        className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border transition text-center ${propertyType === pt.value
+                                            ? 'border-gold-500 bg-gold-500/10 text-gold-400'
+                                            : 'border-white/10 bg-black/30 text-[var(--muted-text)] hover:border-white/30 hover:text-[var(--page-text)]'
+                                            }`}
+                                    >
+                                        <span className="text-2xl">{pt.emoji}</span>
+                                        <span className="text-xs font-medium">{pt.label}</span>
+                                    </button>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-400">Description</label>
+                        <label className="text-sm font-semibold text-[var(--muted-text)]">Description</label>
                         <textarea
                             required
                             rows={4}
@@ -266,7 +343,7 @@ export default function AddPropertyPage() {
                 <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-gold-500 border-b border-white/10 pb-2">Location</h3>
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-400">Full Address</label>
+                        <label className="text-sm font-semibold text-[var(--muted-text)]">Full Address</label>
                         <input
                             required
                             type="text"
@@ -284,9 +361,11 @@ export default function AddPropertyPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {([
-                            { label: "Guests", icon: Users, value: maxGuests, set: setMaxGuests, min: 1, step: 1 },
-                            { label: "Bedrooms", icon: BedDouble, value: bedrooms, set: setBedrooms, min: 0, step: 1 },
-                            { label: "Beds", icon: BedIcon, value: beds, set: setBeds, min: 0, step: 1 },
+                            { label: "Guests/Capacity", icon: Users, value: maxGuests, set: setMaxGuests, min: 1, step: 1 },
+                            ...(propertyCategory === 'residential' ? [
+                                { label: "Bedrooms", icon: BedDouble, value: bedrooms, set: setBedrooms, min: 0, step: 1 },
+                                { label: "Beds", icon: BedIcon, value: beds, set: setBeds, min: 0, step: 1 }
+                            ] : []),
                             { label: "Bathrooms", icon: Bath, value: bathrooms, set: setBathrooms, min: 0, step: 0.5 },
                         ] as Array<{ label: string, icon: any, value: number, set: (v: number) => void, min: number, step: number }>).map(({ label, icon: Icon, value, set, min, step }) => (
                             <div key={label} className="flex items-center justify-between bg-black/30 border border-white/10 rounded-2xl px-5 py-4 hover:border-white/20 transition">
@@ -294,20 +373,20 @@ export default function AddPropertyPage() {
                                     <div className="w-9 h-9 rounded-xl bg-gold-500/10 flex items-center justify-center text-gold-500">
                                         <Icon className="w-4 h-4" />
                                     </div>
-                                    <span className="text-sm font-medium text-white">{label}</span>
+                                    <span className="text-sm font-medium text-[var(--page-text)]">{label}</span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <button
                                         type="button"
                                         onClick={() => set(Math.max(min, parseFloat((value - step).toFixed(1))))}
                                         disabled={value <= min}
-                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:border-gold-500 hover:text-gold-400 transition disabled:opacity-30 disabled:cursor-not-allowed text-lg font-light"
+                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-[var(--muted-text)] hover:border-gold-500 hover:text-gold-400 transition disabled:opacity-30 disabled:cursor-not-allowed text-lg font-light"
                                     >−</button>
                                     <span className="w-8 text-center text-white font-semibold text-sm tabular-nums">{value}</span>
                                     <button
                                         type="button"
                                         onClick={() => set(parseFloat((value + step).toFixed(1)))}
-                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:border-gold-500 hover:text-gold-400 transition text-lg font-light"
+                                        className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-[var(--muted-text)] hover:border-gold-500 hover:text-gold-400 transition text-lg font-light"
                                     >+</button>
                                 </div>
                             </div>
@@ -315,7 +394,7 @@ export default function AddPropertyPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-400">Amenities</label>
+                        <label className="text-sm font-semibold text-[var(--muted-text)]">Amenities</label>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                             {["Wifi", "Air conditioning", "Kitchen", "Heating", "Workspace", "TV", "Pool", "Hot tub", "Gym", "Free parking"].map((item) => (
                                 <label key={item} className="flex items-center gap-2 cursor-pointer group">
@@ -334,7 +413,7 @@ export default function AddPropertyPage() {
                                             }
                                         }}
                                     />
-                                    <span className={`text-sm transition ${amenities.includes(item) ? 'text-white' : 'text-gray-400 group-hover:text-gold-500'}`}>{item}</span>
+                                    <span className={`text-sm transition ${amenities.includes(item) ? 'text-[var(--page-text)]' : 'text-[var(--muted-text)] group-hover:text-gold-500'}`}>{item}</span>
                                 </label>
                             ))}
                         </div>
@@ -348,7 +427,7 @@ export default function AddPropertyPage() {
                             <Wand2 className="w-5 h-5" />
                             Smart Media ({images.length})
                         </h3>
-                        <p className="text-xs text-gray-400">AI Auto-categorization Enabled</p>
+                        <p className="text-xs text-[var(--muted-text)]">AI Auto-categorization Enabled</p>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -377,7 +456,7 @@ export default function AddPropertyPage() {
                                 </div>
 
                                 {/* Category Select */}
-                                <div className="p-2 bg-surface-100 border-t border-white/5">
+                                <div className="p-2 bg-[var(--surface-100)] border-t border-[var(--card-border)]">
                                     <select
                                         value={img.category}
                                         onChange={(e) => updateCategory(img.id, e.target.value)}
@@ -393,8 +472,8 @@ export default function AddPropertyPage() {
 
                         {/* Upload Button */}
                         <label className="aspect-video border-2 border-dashed border-white/10 rounded-xl hover:bg-white/5 transition relative flex flex-col items-center justify-center cursor-pointer group">
-                            <Upload className="w-6 h-6 text-gray-400 group-hover:text-gold-500 mb-2 transition" />
-                            <span className="text-sm text-gray-400">Add Photos</span>
+                            <Upload className="w-6 h-6 text-[var(--muted-text)] group-hover:text-gold-500 mb-2 transition" />
+                            <span className="text-sm text-[var(--muted-text)]">Add Photos</span>
                             <input
                                 type="file"
                                 accept="image/*"

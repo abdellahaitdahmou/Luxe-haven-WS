@@ -16,7 +16,7 @@ export function DashboardMobileNav({ isHost }: { isHost: boolean }) {
                 {isHost ? "Host Dashboard" : "Traveler Dashboard"}
             </span>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-                {isOpen ? <X className="text-white" /> : <Menu className="text-white" />}
+                {isOpen ? <X className="text-[var(--page-text)]" /> : <Menu className="text-[var(--page-text)]" />}
             </Button>
 
             {/* Overlay Menu */}

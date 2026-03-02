@@ -71,8 +71,8 @@ export function PropertyCalendar({
                     day_range_end: "!bg-gold-500/20 !text-black rounded-r-full rounded-l-none hover:bg-gold-500/30",
                     day_range_middle: "!bg-gold-500/20 !text-black rounded-none hover:!bg-gold-500/30",
                     day_today: "font-bold text-amber-600",
-                    day_outside: "text-gray-300 opacity-50",
-                    day_disabled: "text-gray-400 opacity-50 line-through decoration-red-500",
+                    day_outside: "text-[var(--muted-text)] opacity-50",
+                    day_disabled: "text-[var(--muted-text)] opacity-50 line-through decoration-red-500",
                     day_hidden: "invisible",
                 }}
                 modifiersClassNames={{

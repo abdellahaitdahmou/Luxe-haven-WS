@@ -12,14 +12,14 @@ export function IdVerificationSection({ profile }: IdVerificationSectionProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <div className="bg-surface-50 border border-white/10 rounded-xl p-8 max-w-2xl">
+        <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-xl p-8 max-w-2xl">
             <div className="flex items-start justify-between">
                 <div>
-                    <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                    <h3 className="text-xl font-bold text-[var(--page-text)] mb-2 flex items-center gap-2">
                         <ShieldCheck className="w-5 h-5 text-gold-500" />
                         Identity Verification
                     </h3>
-                    <p className="text-gray-400 mb-6">
+                    <p className="text-[var(--muted-text)] mb-6">
                         Verify your identity to unlock booking features and build trust with hosts.
                     </p>
                 </div>
@@ -35,15 +35,15 @@ export function IdVerificationSection({ profile }: IdVerificationSectionProps) {
             </div>
 
             {!profile?.is_verified && (
-                <div className="bg-surface-100 p-6 rounded-lg border border-white/5">
-                    <p className="text-white mb-4">Please complete the verification process by uploading your government ID.</p>
+                <div className="bg-[var(--surface-100)] p-6 rounded-lg border border-[var(--card-border)]">
+                    <p className="text-[var(--page-text)] mb-4">Please complete the verification process by uploading your government ID.</p>
                     <button
                         onClick={() => setIsModalOpen(true)}
                         className="bg-gold-500 hover:bg-gold-400 text-black font-bold py-2 px-4 rounded-lg transition-colors"
                     >
                         Start Verification
                     </button>
-                    <p className="text-sm text-gray-500 italic mt-4">
+                    <p className="text-sm text-[var(--muted-text)] italic mt-4">
                         * You can start verification here or when making your first booking.
                     </p>
                 </div>

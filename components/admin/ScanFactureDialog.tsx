@@ -20,9 +20,26 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
     const [mode, setMode] = useState<"choice" | "camera" | "upload" | "review">("choice");
     const [image, setImage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [extractedData, setExtractedData] = useState<any>(null);
     const [isSaving, setIsSaving] = useState(false);
     const webcamRef = useRef<Webcam>(null);
+
+    // Editable form state
+    const [formData, setFormData] = useState({
+        supplier: "",
+        ice: "",
+        invoice_number: "",
+        date: "",
+        due_date: "",
+        amount_ht: 0,
+        tva: 0,
+        amount_ttc: 0,
+        remise: 0,
+        debit: 0,
+        credit: 0,
+        total_paye: 0,
+        payment_method: "Espèce" as string,
+        category: "Other"
+    });
 
     const capture = useCallback(() => {
         const imageSrc = webcamRef.current?.getScreenshot();
@@ -50,8 +67,25 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
         setMode("review");
         try {
             const result = await processInvoiceAction(base64);
-            if (result.success) {
-                setExtractedData(result.data);
+            if (result.success && result.data) {
+                const d = result.data;
+                const ttc = d.amount_ttc || 0;
+                setFormData({
+                    supplier: d.supplier || "",
+                    ice: d.ice || "",
+                    invoice_number: d.invoice_number || "",
+                    date: d.date || new Date().toISOString().split("T")[0],
+                    due_date: d.due_date || d.date || new Date().toISOString().split("T")[0],
+                    amount_ht: d.amount_ht || 0,
+                    tva: d.tva || 0,
+                    amount_ttc: ttc,
+                    remise: d.remise || 0,
+                    debit: d.debit || ttc,
+                    credit: d.credit || 0,
+                    total_paye: d.total_paye || ttc,
+                    payment_method: d.payment_method || "Espèce",
+                    category: d.category || "Other"
+                });
                 toast.success("Invoice scanned successfully");
             } else {
                 toast.error(result.error || "Failed to process invoice");
@@ -63,26 +97,47 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
         }
     };
 
+    const toDbPaymentMethod = (method: string): "cash" | "personal_virement" | "society_virement" => {
+        if (!method) return "cash";
+        const m = method.toLowerCase();
+        if (m.includes("virement")) return "society_virement";
+        if (m.includes("chèque") || m.includes("cheque")) return "personal_virement";
+        return "cash";
+    };
+
     const handleSave = async () => {
-        if (!extractedData) return;
         setIsSaving(true);
         try {
             // 1. Save to local DB (Supabase)
             await createExpense({
-                description: extractedData.supplier ? `${extractedData.supplier} - ${extractedData.invoice_number || "Invoice"}` : "Scanned Invoice",
-                amount: extractedData.amount_ttc || 0,
-                date: extractedData.date || new Date().toISOString().split("T")[0],
-                payment_method: "cash", // Default or map from extractedData
-                property_name: "platform", // Default
-                category: extractedData.category || "Other"
+                description: formData.supplier ? `${formData.supplier} - ${formData.invoice_number || "Invoice"}` : "Scanned Invoice",
+                amount: formData.total_paye || formData.amount_ttc || 0,
+                date: formData.date || new Date().toISOString().split("T")[0],
+                payment_method: toDbPaymentMethod(formData.payment_method),
+                property_name: "platform",
+                category: formData.category
             });
 
-            // 2. Save to Google Sheet
-            const sheetResult = await saveToGoogleSheet(extractedData);
+            // 2. Save to Google Sheet — columns match LES FACTURES D'ACHATS exactly
+            const sheetResult = await saveToGoogleSheet({
+                "N° de facture": formData.invoice_number,
+                "Date": formData.date,
+                "Fournisseur": formData.supplier,
+                "ICE": formData.ice,
+                "Montant HT": formData.amount_ht,
+                "TVA 20%": formData.tva,
+                "Montant TTC": formData.amount_ttc,
+                "Mode de paiement": formData.payment_method,
+                "Débit": formData.debit,
+                "Crédit": formData.credit,
+                "Remise": formData.remise,
+                "TOTAL PAYÉ": formData.total_paye,
+            });
+
             if (sheetResult.success) {
                 toast.success("Saved to database and Google Sheets!");
             } else {
-                toast.warning("Saved to database, but failed to sync with Google Sheets. Please check your credentials.");
+                toast.warning("Saved to database, but failed to sync with Google Sheets. Check your script URL.");
             }
 
             onSuccess();
@@ -98,7 +153,22 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
     const reset = () => {
         setMode("choice");
         setImage(null);
-        setExtractedData(null);
+        setFormData({
+            supplier: "",
+            ice: "",
+            invoice_number: "",
+            date: "",
+            due_date: "",
+            amount_ht: 0,
+            tva: 0,
+            amount_ttc: 0,
+            remise: 0,
+            debit: 0,
+            credit: 0,
+            total_paye: 0,
+            payment_method: "Espèce",
+            category: "Other"
+        });
         setIsProcessing(false);
     };
 
@@ -117,9 +187,9 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
                     </div>
                 </DialogHeader>
 
-                <div className="p-6">
+                <div className="px-6 py-2">
                     {mode === "choice" && (
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-4 py-8">
                             <button
                                 onClick={() => setMode("camera")}
                                 className="flex flex-col items-center justify-center gap-4 p-8 bg-white/[0.03] border border-white/5 rounded-3xl hover:bg-gold-500/5 hover:border-gold-500/30 transition-all group"
@@ -140,7 +210,7 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
                     )}
 
                     {mode === "camera" && (
-                        <div className="space-y-4">
+                        <div className="space-y-4 py-4">
                             <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-black aspect-video">
                                 <Webcam
                                     audio={false}
@@ -170,47 +240,154 @@ export function ScanFactureDialog({ open, onOpenChange, onSuccess }: ScanFacture
                                     <p className="text-xl font-bold animate-pulse">AI is reading your invoice...</p>
                                     <p className="text-sm text-gray-500">Extracting amounts, dates, and supplier info</p>
                                 </div>
-                            ) : extractedData ? (
-                                <>
+                            ) : (
+                                <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                                    {/* Row 1: Fournisseur + ICE */}
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Supplier</p>
-                                            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-bold text-gold-500">
-                                                {extractedData.supplier || "Not found"}
-                                            </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Fournisseur</p>
+                                            <Input
+                                                value={formData.supplier}
+                                                onChange={e => setFormData({ ...formData, supplier: e.target.value })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                placeholder="e.g. Bricoma"
+                                            />
                                         </div>
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Invoice #</p>
-                                            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-bold">
-                                                {extractedData.invoice_number || "Not found"}
-                                            </div>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Date</p>
-                                            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-bold">
-                                                {extractedData.date || "Not found"}
-                                            </div>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Total TTC</p>
-                                            <div className="bg-rose-500/10 border border-rose-500/20 p-3 rounded-xl font-black text-rose-500 text-lg">
-                                                {extractedData.amount_ttc ? `${extractedData.amount_ttc} DH` : "Not found"}
-                                            </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">ICE</p>
+                                            <Input
+                                                value={formData.ice}
+                                                onChange={e => setFormData({ ...formData, ice: e.target.value })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                                placeholder="15-digit ICE"
+                                            />
                                         </div>
                                     </div>
+
+                                    {/* Row 2: N° Facture + Date */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">N° Facture</p>
+                                            <Input
+                                                value={formData.invoice_number}
+                                                onChange={e => setFormData({ ...formData, invoice_number: e.target.value })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Date Facture</p>
+                                            <Input
+                                                type="date"
+                                                value={formData.date}
+                                                onChange={e => setFormData({ ...formData, date: e.target.value })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Row 3: Montant HT + TVA + TTC */}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Montant HT</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.amount_ht}
+                                                onChange={e => setFormData({ ...formData, amount_ht: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">TVA 20% (MAD)</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.tva}
+                                                onChange={e => setFormData({ ...formData, tva: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Montant TTC</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.amount_ttc}
+                                                onChange={e => setFormData({ ...formData, amount_ttc: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Row 4: Mode de paiement + Remise */}
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Mode de Paiement</p>
+                                            <select
+                                                value={formData.payment_method}
+                                                onChange={e => setFormData({ ...formData, payment_method: e.target.value })}
+                                                className="w-full bg-white/5 border border-white/10 h-11 rounded-xl focus:border-gold-500/50 px-3 text-sm text-white"
+                                            >
+                                                <option value="Espèce" className="bg-black">Espèce</option>
+                                                <option value="Carte banquaire" className="bg-black">Carte banquaire</option>
+                                                <option value="Virement" className="bg-black">Virement</option>
+                                                <option value="Chèque" className="bg-black">Chèque</option>
+                                                <option value="BC" className="bg-black">BC</option>
+                                                <option value="C/E" className="bg-black">C/E</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Remise (MAD)</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.remise}
+                                                onChange={e => setFormData({ ...formData, remise: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Row 5: Débit + Crédit + TOTAL PAYÉ */}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Débit</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.debit}
+                                                onChange={e => setFormData({ ...formData, debit: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">Crédit</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.credit}
+                                                onChange={e => setFormData({ ...formData, credit: parseFloat(e.target.value) || 0 })}
+                                                className="bg-white/5 border-white/10 h-11 rounded-xl focus:border-gold-500/50"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <p className="text-[10px] uppercase font-bold text-gray-500 ml-1">TOTAL PAYÉ</p>
+                                            <Input
+                                                type="number"
+                                                value={formData.total_paye}
+                                                onChange={e => setFormData({ ...formData, total_paye: parseFloat(e.target.value) || 0 })}
+                                                className="bg-rose-500/5 border-rose-500/20 text-rose-400 font-bold h-11 rounded-xl focus:border-rose-500/50"
+                                            />
+                                        </div>
+                                    </div>
+
                                     <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl flex items-center gap-3">
                                         <ShieldCheck className="w-5 h-5 text-emerald-500" />
-                                        <p className="text-xs text-emerald-300 font-medium">Ready to sync with Local DB & Google Sheets</p>
+                                        <p className="text-xs text-emerald-300 font-medium italic">Colonnes synchronisées avec LES FACTURES D&apos;ACHATS 2025.</p>
                                     </div>
-                                </>
-                            ) : null}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
 
                 {mode === "review" && !isProcessing && (
-                    <DialogFooter className="p-6 pt-0 flex gap-3">
-                        <Button variant="ghost" onClick={reset} disabled={isSaving} className="flex-1 h-12 rounded-xl text-gray-400">Discard</Button>
+                    <DialogFooter className="p-6 pt-2 flex gap-3">
+                        <Button variant="ghost" onClick={reset} disabled={isSaving} className="flex-1 h-12 rounded-xl text-gray-400 hover:text-white hover:bg-white/5">Discard</Button>
                         <Button
                             onClick={handleSave}
                             disabled={isSaving}

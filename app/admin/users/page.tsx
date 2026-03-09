@@ -15,11 +15,17 @@ import {
     Dialog, DialogContent, DialogDescription, DialogFooter,
     DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
     MoreHorizontal, Search, Shield, ShieldAlert, ShieldCheck,
     User, Loader2, Users, UserCheck, UserPlus, Building2, CheckSquare,
+    Ban, Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,6 +37,7 @@ interface Profile {
     avatar_url: string | null;
     role: "admin" | "owner" | "manager" | "guest";
     is_verified: boolean;
+    is_banned?: boolean;
     created_at: string;
 }
 
@@ -88,6 +95,10 @@ export default function AdminUsersPage() {
     const [assignDialogOwner, setAssignDialogOwner] = useState<Owner | null>(null);
     const [assignedPropertyIds, setAssignedPropertyIds] = useState<Set<string>>(new Set());
     const [savingAssignment, setSavingAssignment] = useState(false);
+
+    // Delete user
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<Profile | null>(null);
 
     useEffect(() => {
         fetchAll();
@@ -159,6 +170,58 @@ export default function AdminUsersPage() {
             await fetchOwners();
         } catch {
             toast.error("Failed to update role");
+        } finally {
+            setUpdating(null);
+        }
+    }
+
+    async function handleBanUser(user: Profile) {
+        try {
+            setUpdating(user.id);
+            const newStatus = !user.is_banned;
+            const res = await fetch(`/api/admin/users/${user.id}/ban`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ is_banned: newStatus })
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || "Failed to update ban status");
+            }
+
+            setUsers(users.map(u => u.id === user.id ? { ...u, is_banned: newStatus } : u));
+            toast.success(newStatus ? "User has been banned" : "User has been unbanned");
+            await fetchOwners();
+        } catch (err: any) {
+            toast.error(err.message || "Failed to update ban status");
+        } finally {
+            setUpdating(null);
+        }
+    }
+
+    async function handleDeleteUser() {
+        if (!userToDelete) return;
+        try {
+            setUpdating(userToDelete.id);
+            const res = await fetch(`/api/admin/users/${userToDelete.id}`, {
+                method: "DELETE"
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || "Failed to delete user");
+            }
+
+            setUsers(users.filter(u => u.id !== userToDelete.id));
+            if (HOST_ROLES.includes(userToDelete.role)) {
+                setOwners(owners.filter(o => o.profile_id !== userToDelete.id));
+            }
+            toast.success("User deleted permanently");
+            setIsDeleteDialogOpen(false);
+            setUserToDelete(null);
+        } catch (err: any) {
+            toast.error(err.message || "Failed to delete user");
         } finally {
             setUpdating(null);
         }
@@ -364,6 +427,9 @@ export default function AdminUsersPage() {
                                             <RoleIcon className="w-3.5 h-3.5" />
                                             <span className="capitalize">{user.role}</span>
                                         </Badge>
+                                        {user.is_banned && (
+                                            <Badge className="ml-2 bg-red-500/10 text-red-500 border-0">Banned</Badge>
+                                        )}
                                     </TableCell>
                                     <TableCell>
                                         {user.is_verified ? (
@@ -397,6 +463,13 @@ export default function AdminUsersPage() {
                                                     <DropdownMenuSeparator className="bg-white/10" />
                                                     <DropdownMenuItem onClick={() => handleRoleUpdate(user.id, "admin")} className="text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer">
                                                         <ShieldAlert className="mr-2 h-4 w-4" /> Admin
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuSeparator className="bg-white/10" />
+                                                    <DropdownMenuItem onClick={() => handleBanUser(user)} className="hover:bg-white/10 cursor-pointer">
+                                                        <Ban className="mr-2 h-4 w-4" /> {user.is_banned ? "Unban User" : "Ban User"}
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => { setUserToDelete(user); setIsDeleteDialogOpen(true); }} className="text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer">
+                                                        <Trash2 className="mr-2 h-4 w-4" /> Delete User
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
@@ -735,6 +808,32 @@ export default function AdminUsersPage() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            {/* DELETE USER DIALOG */}
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent className="bg-[var(--card-bg)] border-red-500/20 text-white sm:max-w-md">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className="text-red-500 flex items-center gap-2">
+                            <Trash2 className="w-5 h-5" />
+                            Delete User Permanently?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-[var(--muted-text)]">
+                            This action cannot be undone. This will permanently delete <b className="text-white">{userToDelete?.full_name || userToDelete?.email}</b> and remove their data from our servers.
+                            <br /><br />
+                            <span className="text-red-400">Warning:</span> All properties, bookings, and messages associated with this user will also be permanently deleted.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setUserToDelete(null)} className="border-white/10 text-[var(--page-text)] hover:bg-white/5">
+                            Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDeleteUser} className="bg-red-500 text-white hover:bg-red-600">
+                            {updating === userToDelete?.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                            Yes, delete user
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }

@@ -48,7 +48,7 @@ export function Navbar() {
     }
 
     const displayName = user?.user_metadata?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || null
-    const isAdmin = role === "admin" || role === "owner"
+    const isAdmin = role === "admin" || role === "owner" || role === "manager"
 
     return (
         <motion.nav

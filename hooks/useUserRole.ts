@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { User } from '@supabase/supabase-js'
 
-type UserRole = 'admin' | 'owner' | 'guest' | null
+type UserRole = 'admin' | 'owner' | 'manager' | 'guest' | null
 
 export function useUserRole() {
     const supabase = useMemo(() => createClient(), [])

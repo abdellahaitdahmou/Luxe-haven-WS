@@ -41,7 +41,7 @@ export default function LoginPage() {
 
             const role = profile?.role || 'guest';
 
-            if (role === 'admin' || role === 'owner') {
+            if (role === 'admin' || role === 'owner' || role === 'manager') {
                 router.push('/admin/properties');
             } else {
                 router.push('/dashboard'); // Travelers go to dashboard

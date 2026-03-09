@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { createClient } from "@/utils/supabase/server";
-import { HostSidebar } from "@/components/dashboard/HostSidebar";
+import { AdminSidebar, type UserRole } from "@/components/AdminSidebar";
 import { TravelerSidebar } from "@/components/dashboard/TravelerSidebar";
 import { DashboardMobileNav } from "@/components/dashboard/DashboardMobileNav";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
@@ -22,8 +22,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         .eq('id', user.id)
         .single();
 
-    const role = profile?.role || 'guest';
-    const isHost = role === 'admin' || role === 'owner' || role === 'host';
+    const role = (profile?.role || 'guest') as UserRole;
+    const isHost = role === 'admin' || role === 'owner' || role === 'manager' || role === ('host' as any);
 
     // Merge auth data with profile data, prioritizing profile data but falling back to auth metadata
     const userProfile = {
@@ -36,10 +36,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     return (
         <div className="flex h-screen overflow-hidden bg-[var(--page-bg)] text-[var(--page-text)] flex-col md:flex-row">
             {/* Mobile Navigation */}
-            <DashboardMobileNav isHost={isHost} />
+            <DashboardMobileNav role={role} isHost={isHost} />
 
             {/* Sidebar based on Role (Desktop) */}
-            {isHost ? <HostSidebar /> : <TravelerSidebar />}
+            {isHost ? <AdminSidebar role={role} /> : <TravelerSidebar />}
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-h-0 overflow-hidden">

@@ -748,7 +748,7 @@ export default function AdminUsersPage() {
                         <p className="text-sm text-[var(--muted-text)]">{travelers.length} traveler{travelers.length !== 1 ? "s" : ""} — registered guests</p>
                     </div>
                 </div>
-                <UserTable data={travelers} showActions={false} emptyMsg="No travelers have signed up yet." />
+                <UserTable data={travelers} showActions={true} emptyMsg="No travelers have signed up yet." />
             </section>
 
             {/* ASSIGN LISTINGS DIALOG */}

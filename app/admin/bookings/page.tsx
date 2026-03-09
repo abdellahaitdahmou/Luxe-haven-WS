@@ -69,7 +69,7 @@ export default function AdminBookingsPage() {
             .from("bookings")
             .select(`
                 *,
-                profiles:user_id (id, full_name, email, avatar_url),
+                profiles:guest_id (id, full_name, email, avatar_url),
                 properties (
                     title, 
                     bedrooms, 
@@ -80,7 +80,7 @@ export default function AdminBookingsPage() {
             .order("created_at", { ascending: false });
 
         if (error) {
-            console.error("Error fetching bookings:", error);
+            console.error("Error fetching bookings:", error.message, error.code, error.details);
             toast.error("Failed to load bookings");
         } else {
             setAllBookings(bookingsData || []);

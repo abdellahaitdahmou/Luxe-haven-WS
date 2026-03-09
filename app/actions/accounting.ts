@@ -21,6 +21,12 @@ export type ReceivedPaymentParams = {
     received_by?: string; // profile_id
     property_name?: string;
     category?: string;
+    // New booking-detail fields (from Airbnb CSV)
+    check_out_date?: string;
+    guests?: number;
+    channel?: string;
+    nights?: number;
+    price_per_night?: number;
 };
 
 export async function createExpense(params: ExpenseParams) {
@@ -152,6 +158,50 @@ export async function importReceivedPayments(payments: ReceivedPaymentParams[]) 
     if (error) {
         console.error("Error importing payments:", error);
         throw new Error(error.message);
+    }
+
+    revalidatePath("/admin/accounting/payments");
+    return { success: true };
+}
+
+export async function updateReceivedPayment(id: string, params: Partial<ReceivedPaymentParams>) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) throw new Error("Unauthorized");
+
+    const { error } = await supabase
+        .from("received_payments")
+        .update(params)
+        .eq("id", id);
+
+    if (error) {
+        console.error("Error updating received payment:", error);
+        throw new Error(error.message);
+    }
+
+    revalidatePath("/admin/accounting/payments");
+    return { success: true };
+}
+
+export async function deleteReceivedPayments(ids: string[]) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) throw new Error("Unauthorized");
+
+    const CHUNK_SIZE = 100;
+    for (let i = 0; i < ids.length; i += CHUNK_SIZE) {
+        const chunk = ids.slice(i, i + CHUNK_SIZE);
+        const { error } = await supabase
+            .from("received_payments")
+            .delete()
+            .in("id", chunk);
+
+        if (error) {
+            console.error(`Error deleting chunk ${i / CHUNK_SIZE}:`, error);
+            throw new Error(error.message);
+        }
     }
 
     revalidatePath("/admin/accounting/payments");

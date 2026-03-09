@@ -1,4 +1,4 @@
-import { AdminSidebar } from "@/components/AdminSidebar";
+import { AdminSidebar, type UserRole } from "@/components/AdminSidebar";
 import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { createClient } from "@/utils/supabase/server";
@@ -17,12 +17,14 @@ export default async function AdminLayout({
         redirect("/login");
     }
 
-    // Fetch user profile for header
+    // Fetch user profile (includes role)
     const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
+
+    const role = (profile?.role ?? "guest") as UserRole;
 
     const userProfile = {
         ...profile,
@@ -34,10 +36,10 @@ export default async function AdminLayout({
     return (
         <div className="h-screen overflow-hidden bg-[var(--page-bg)] text-[var(--page-text)] font-sans selection:bg-gold-500 selection:text-black flex flex-col md:flex-row">
             {/* Mobile Nav */}
-            <AdminMobileNav />
+            <AdminMobileNav role={role} />
 
             {/* Desktop Sidebar */}
-            <AdminSidebar />
+            <AdminSidebar role={role} />
 
             <main className="flex-1 md:ml-64 flex flex-col min-h-0 overflow-hidden">
                 <AdminHeader userProfile={userProfile} />

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AdminSidebar } from "@/components/AdminSidebar";
+import { AdminSidebar, type UserRole } from "@/components/AdminSidebar";
 
-export function AdminMobileNav() {
+export function AdminMobileNav({ role }: { role?: UserRole }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -21,7 +21,7 @@ export function AdminMobileNav() {
             {isOpen && (
                 <div className="absolute top-16 left-0 w-full h-[calc(100vh-4rem)] bg-black/95 backdrop-blur-xl z-50 p-6 overflow-y-auto animate-in slide-in-from-top-10">
                     <div onClick={() => setIsOpen(false)}>
-                        <AdminSidebar mobile />
+                        <AdminSidebar mobile role={role} />
                     </div>
                 </div>
             )}

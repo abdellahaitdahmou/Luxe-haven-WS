@@ -13,7 +13,7 @@ export async function POST(request: Request) {
           <h1 style="color: #D4AF37;">Luxe Haven Invitation</h1>
           <p>You have been invited to join the Luxe Haven platform as a <strong>${role}</strong>.</p>
           <p>Please sign up using this email address to access your account.</p>
-          <a href="${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/login" style="background-color: #D4AF37; color: black; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">Accept Invitation</a>
+          <a href="${process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'}/signup?email=${encodeURIComponent(email)}" style="background-color: #D4AF37; color: black; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">Accept Invitation</a>
           <p style="margin-top: 30px; color: #666; font-size: 12px;">If you were not expecting this invitation, please ignore this email.</p>
         </div>
       `,

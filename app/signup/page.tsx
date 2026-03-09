@@ -3,7 +3,7 @@
 import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
@@ -12,6 +12,14 @@ export default function SignupPage() {
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const emailParam = queryParams.get("email");
+        if (emailParam) {
+            setEmail(emailParam);
+        }
+    }, []);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
